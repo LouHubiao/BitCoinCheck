@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AzureDeploymentSettings>
+  <CloudDeploymentEndPointAddress>http://serverforbop.chinacloudapp.cn:5304</CloudDeploymentEndPointAddress>
+  <ServiceLocation></ServiceLocation>
+  <VirtualMachineCount></VirtualMachineCount>
+  <VirtualMachineCapacity></VirtualMachineCapacity>
+</AzureDeploymentSettings>

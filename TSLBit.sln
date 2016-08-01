@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FD8A01E6-12A1-461A-AF0E-51EBE962703F}") = "TSLBit", "TSLBit\TSLBit.tproj", "{6790F0D3-AB83-4315-8621-E875C30A1DF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D1DB112F-8C09-4A3D-9C6E-2C45B85E7A54}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+		Performance2.psess = Performance2.psess
+		Performance3.psess = Performance3.psess
+		Performance4.psess = Performance4.psess
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6790F0D3-AB83-4315-8621-E875C30A1DF3}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{6790F0D3-AB83-4315-8621-E875C30A1DF3}.Debug|x64.ActiveCfg = Debug|x64
+		{6790F0D3-AB83-4315-8621-E875C30A1DF3}.Debug|x64.Build.0 = Debug|x64
+		{6790F0D3-AB83-4315-8621-E875C30A1DF3}.Release|Any CPU.ActiveCfg = Release|x64
+		{6790F0D3-AB83-4315-8621-E875C30A1DF3}.Release|x64.ActiveCfg = Release|x64
+		{6790F0D3-AB83-4315-8621-E875C30A1DF3}.Release|x64.Build.0 = Release|x64
+		{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}.Debug|x64.ActiveCfg = Debug|x64
+		{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}.Debug|x64.Build.0 = Debug|x64
+		{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}.Release|Any CPU.ActiveCfg = Release|x64
+		{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}.Release|x64.ActiveCfg = Release|x64
+		{B21DFF6A-AA2B-4E30-945F-826AEC7253D6}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

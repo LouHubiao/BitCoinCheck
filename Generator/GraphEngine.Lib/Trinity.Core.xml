@@ -1,0 +1,3402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Trinity.Core</name>
+  </assembly>
+  <members>
+    <member name="T:Trinity.Network.BSP">
+      <summary>
+            Provides methods for global bulk synchronization.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.BSP.BarrierSync(System.Int32)">
+      <summary>
+            Sets a global barrier synchronization point for a specified BSP task. A process participating current BSP task waits until all other processes also reach this point.
+            </summary>
+      <param name="taskId">A user-specified task Id used to differentiate different barrier synchronization tasks.</param>
+    </member>
+    <member name="M:Trinity.Network.BSP.BarrierSync">
+      <summary>
+            Sets a global barrier synchronization point. A process participating current BSP task waits until all other processes also reach this point.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.GetServerIdByCellIdDelegate">
+      <summary>
+            Represents a reference to a method that gets the server Id by the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit Trinity cell Id.</param>
+      <returns>The Trinity server Id.</returns>
+    </member>
+    <member name="T:Trinity.Network.Http.CommonHttpHandlers">
+      <summary>
+            Represents a set of common http handlers.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Http.CommonHttpHandlers.ListAvailableEndpoints(System.Net.HttpListenerContext,System.Collections.Generic.IEnumerable{System.String},System.Type)">
+      <summary>
+            Lists the available HTTP endpoints provided by this HTTP server.
+            </summary>
+      <param name="ctx">The HTTP request context.</param>
+      <param name="availableEndpointNames">The list of available endpoints.</param>
+      <param name="serverType">The type of the TrinityServer or TrinityProxy.</param>
+    </member>
+    <member name="M:Trinity.Network.Http.CommonHttpHandlers.PageNotFound(System.Net.HttpListenerContext)">
+      <summary>
+            Sends a "PageNotFound" response to an HTTP request.
+            </summary>
+      <param name="context">The corresponding context object of the HTTP request.</param>
+    </member>
+    <member name="T:Trinity.Network.Http.HttpHandler">
+      <summary>
+            Represents an HTTP request handler.
+            </summary>
+      <param name="context">An context object that provides access to the request and response objects.</param>
+    </member>
+    <member name="T:Trinity.Network.Http.TrinityHttpServer">
+      <summary>
+            Represents an HTTP server.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Http.TrinityHttpServer.#ctor(Trinity.Network.Http.HttpHandler,System.Collections.Generic.List{System.String})">
+      <summary>
+            Initializes a new instance of Trinity HTTP server with the specified <see cref="T:Trinity.Network.Http.HttpListener" /> and service endpoints.
+            </summary>
+      <param name="primaryHandler">An HTTP request handler.</param>
+      <param name="serviceEndpoints">A list of Uniform Resource Identifier (URI) prefixes handled by this HTTP server.</param>
+    </member>
+    <member name="M:Trinity.Network.Http.TrinityHttpServer.SetInstanceList(System.Collections.Generic.List{Trinity.Network.AvailabilityGroup})">
+      <summary>
+            Sets the instance list. This is required for <see cref="M:Trinity.Network.Http.TrinityHttpServer.RelayRequest(System.Int32,System.Net.HttpListenerContext)" /> to function properly.
+            This method will be called by TSL-generated code upon server start up.
+            </summary>
+      <param name="list">The server list.</param>
+    </member>
+    <member name="M:Trinity.Network.Http.TrinityHttpServer.Listen">
+      <summary>
+            Starts listening for incoming HTTP requests.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Http.TrinityHttpServer.RelayRequest(System.Int32,System.Net.HttpListenerContext)">
+      <summary>
+            Relays an HTTP request to the specified instance. Should only be called if <see cref="M:Trinity.Network.Http.TrinityHttpServer.SetInstanceList(System.Collections.Generic.List{Trinity.Network.AvailabilityGroup})" /> is properly called.
+            </summary>
+      <param name="instance_id">The server id.</param>
+      <param name="context">The context of the request to relay.</param>
+    </member>
+    <member name="T:Trinity.Network.CommunicationSchemaAttribute">
+      <summary>
+            Specifies that a communication protocol group is associated with a communication schema.
+            It is required that a communication protocol group is tagged with this attribute, so that the communication
+            subsystem can retrive the schema of a protocol group and perform communication schema verification and module discovery.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.CommunicationSchemaAttribute.#ctor(System.Type)">
+      <summary>
+            Constructs a CommunicationSchemaAttribute with a given communication schema type.
+            </summary>
+      <param name="schemaType">The type of the communication schema class. The schema class must implement <see cref="T:Trinity.Network.ICommunicationSchema" />.</param>
+    </member>
+    <member name="P:Trinity.Network.CommunicationSchemaAttribute.CommunicationSchemaType">
+      <summary>
+            The type of the associated communication schema.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.ICommunicationSchema">
+      <summary>
+            Represents the communication schema associated with a TrinityServer or TrinityProxy.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.ICommunicationSchema.SynReqProtocolDescriptors">
+      <summary>
+            Returns the descriptors of synchronous-request-no-response protocols.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.ICommunicationSchema.SynReqRspProtocolDescriptors">
+      <summary>
+            Returns the descriptors of synchronous-request-with-response protocols.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.ICommunicationSchema.AsynReqProtocolDescriptors">
+      <summary>
+            Returns the descriptors of asynchronous-request-no-response protocols.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.ICommunicationSchema.Name">
+      <summary>
+            Returns the name of the communication schema.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.ICommunicationSchema.HttpEndpointNames">
+      <summary>
+            Returns the available http endpoint names.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.CommunicationSchemaNotMatchingException">
+      <summary>
+            Represents errors that occur when communication schema does not match.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.CommunicationProtocolGroup">
+      <summary>
+            Represents a group of communication protocols.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.GetCurrentHttpListenerContext">
+      <summary>
+            Gets the HttpListenerContext that is being handled in a handler.
+            Note that this method should only be called within an Http handler.
+            </summary>
+      <returns>The context being handled.</returns>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.RegisterMessageHandler">
+      <summary>
+            Register user-defined message handlers.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.RootHttpHandler(System.Net.HttpListenerContext)">
+      <summary>
+            Handles requests on the root endpoint.
+            </summary>
+      <param name="ctx">A <see cref="T:System.Net.HttpListenerContext" /> object.</param>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.DispatchHttpRequest(System.Net.HttpListenerContext,System.String,System.String)">
+      <summary>
+            Dispatches a HTTP request to a non-root handler.
+            </summary>
+      <param name="ctx"></param>
+      <param name="endpointName">The name of the endpoint.</param>
+      <param name="url"></param>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.GetCommunicationSchema">
+      <summary>
+            Retrieves the communication schema associated with the current instance.
+            </summary>
+      <returns>A communication schema.</returns>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.RegisterCommunicationModule``1">
+      <summary>
+            Registers a communication module type. The registered type will be instantiated when the hosting communication instance starts up.
+            Duplicated registrations of the same module are ignored.
+            </summary>
+      <typeparam name="T">The type of the communication module.</typeparam>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.GetRegisteredCommunicationModuleTypes">
+      <summary>
+            Retrieves all registered communication module types.
+            </summary>
+      <returns></returns>
+    </member>
+    <member name="M:Trinity.Network.CommunicationProtocolGroup.GetCommunicationModule``1">
+      <summary>
+            Gets an instance of a registered communication module.
+            </summary>
+      <typeparam name="T">The type of the communication module.</typeparam>
+      <returns>A communication module object if the module type is registered. Otherwise returns null.</returns>
+    </member>
+    <member name="E:Trinity.Network.CommunicationProtocolGroup.Started">
+      <summary>
+            Raised when the host communication instance is started.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.CommunicationInstance">
+      <summary>
+            Represents a Trinity instance that can be started and perform two-way communication with other instances.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.CommunicationInstance.RegisterMessageHandler">
+      <summary>
+            Register user-defined message handlers.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.CommunicationInstance.RootHttpHandler(System.Net.HttpListenerContext)">
+      <summary>
+            The handler that processes requests on the root endpoint. 
+            The default handler responds with a list of available endpoints. 
+            This method can be overridden for custom behaviors.
+            </summary>
+      <param name="ctx">The context object.</param>
+    </member>
+    <member name="M:Trinity.Network.CommunicationInstance.DispatchHttpRequest(System.Net.HttpListenerContext,System.String,System.String)">
+      <summary>
+            Dispatches an http request to a handler. The default dispatcher routes all requests to the root handler.
+            This method can be overridden for custom dispatching logic.
+            </summary>
+      <remarks>
+            This method will be overridden by TSL-generated stub classes.
+            </remarks>
+      <param name="ctx">The context object.</param>
+      <param name="handlerName">The name of the handler.</param>
+      <param name="url"></param>
+    </member>
+    <member name="M:Trinity.Network.CommunicationInstance.Start">
+      <summary>
+            Starts a Trinity instance.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.IProtocolDescriptor">
+      <summary>
+            Provides metadata associated with a protocol defined in TSL.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.IProtocolDescriptor.Name">
+      <summary>
+            The name of the protocol.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.IProtocolDescriptor.RequestSignature">
+      <summary>
+            The request signature.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.IProtocolDescriptor.ResponseSignature">
+      <summary>
+            The response signature.
+            </summary>
+    </member>
+    <member name="P:Trinity.Network.IProtocolDescriptor.Type">
+      <summary>
+            The type of the protocol.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.TrinityMessageType">
+      <summary>
+            Represents a collection of network message types. 
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessageType.SYNC">
+      <summary>
+            Synchronous message.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessageType.SYNC_WITH_RSP">
+      <summary>
+            Synchronous message with response.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessageType.ASYNC">
+      <summary>
+            Asynchronous message.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessageType.PRESERVED_SYNC">
+      <summary>
+            Preserved synchronous message.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessageType.PRESERVED_SYNC_WITH_RSP">
+      <summary>
+            Preserved synchronous message with response.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessageType.PRESERVED_ASYNC">
+      <summary>
+            Preserved asynchronous message.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.TrinityResponse">
+      <summary>
+            Represents a binary network response.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityResponse.Buffer">
+      <summary>
+            A pointer pointing to the underlying buffer.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityResponse.Size">
+      <summary>
+            The size of the underlying buffer.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityResponse.Offset">
+      <summary>
+            The offset of the payload in the underlying buffer.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityResponse.Dispose">
+      <summary>
+            Releases the unmanaged memory buffer used by the TrinityResponse.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.CommunicationModule">
+      <summary>
+            Represents a module that can be plugged into 
+            a CommunicationInstance or another CommunicationModule.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.CommunicationModule.SendMessage(System.Int32,System.Byte*,System.Int32)">
+      <summary>
+            Sends a binary message to the specified communication module.
+            The message should contain the original message type id defined by the modules,
+            and the offsets will be automatically applied.
+            </summary>
+      <param name="moduleId">A 32-bit module id.</param>
+      <param name="buffer">A binary message buffer.</param>
+      <param name="size">The size of the message.</param>
+    </member>
+    <member name="M:Trinity.Network.CommunicationModule.SendMessage(System.Int32,System.Byte*,System.Int32,Trinity.Network.Messaging.TrinityResponse@)">
+      <summary>
+            Sends a binary message to the specified communication module.
+            The message should contain the original message type id defined by the modules,
+            and the offsets will be automatically applied.
+            </summary>
+      <param name="moduleId">A 32-bit module id.</param>
+      <param name="buffer">A binary message buffer.</param>
+      <param name="size">The size of the message.</param>
+      <param name="response">The TrinityResponse object returned by the remote module.</param>
+    </member>
+    <member name="M:Trinity.Network.CommunicationModule.GetModuleName">
+      <summary>
+            Gets the name of the module. The name will be used during communication schema verification.
+            Also, Http endpoints will be available at http://root_endpoint/module_name/. For example,
+            if the module name is <c>foo</c>, an Http protocol <c>bar</c> is defined within the module, and the host name is <c>addr</c>,
+            then the endpoint is presented at http://addr/foo/bar/.
+            </summary>
+      <returns>The name of the module.</returns>
+    </member>
+    <member name="T:Trinity.Storage.ICellDescriptor">
+      <summary>
+            Provides metadata associated with a cell defined in TSL.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.ITypeDescriptor">
+      <summary>
+            Provides the type information for the data types.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.ITypeDescriptor.IsOfType``1">
+      <summary>
+            Indicates whether the type is of type <typeparamref name="T" />.
+            </summary>
+      <typeparam name="T">The type to query.</typeparam>
+      <returns>true if the type of the field matches the query type <typeparamref name="T" />.</returns>
+    </member>
+    <member name="M:Trinity.Storage.ITypeDescriptor.IsList">
+      <summary>
+            Indicates whether the field is a list.
+            </summary>
+      <returns>true if the field is a list.</returns>
+    </member>
+    <member name="P:Trinity.Storage.ITypeDescriptor.TypeName">
+      <summary>
+            The name of the type.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.ITypeDescriptor.Type">
+      <summary>
+            The CLR type descriptor.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.IAttributeCollection">
+      <summary>
+            Provides a read-only collection of attributes associated with a cell, a struct, or a field defined in TSL.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.IAttributeCollection.GetAttributeValue(System.String)">
+      <summary>
+            Gets the value of an attribute.
+            </summary>
+      <param name="attributeKey">The specified attribute key.</param>
+      <returns>
+        <c>null </c>if not found.</returns>
+    </member>
+    <member name="P:Trinity.Storage.IAttributeCollection.Attributes">
+      <summary>
+            The attribute collection.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.ICellDescriptor.GetFieldNames">
+      <summary>
+            Enumerates the names of the fields of a cell. Note that, calling this method directly
+            on a cell, an accessor, or their generic counterparts, will return the names of all available fields.
+            The available fields of a particular cell include the fields that are not marked optional and the optional fields that have value(s).
+            However, if the cell descriptor is obtained from the <c>Schema</c> class (generated from <c>TSL</c>),
+            it returns the names of all the fields defined in the TSL, statically. 
+            </summary>
+      <returns>A collection of field names.</returns>
+    </member>
+    <member name="M:Trinity.Storage.ICellDescriptor.GetFieldAttributes(System.String)">
+      <summary>
+            Gets the attributes associated with a field.
+            </summary>
+      <param name="fieldName">The name of the target field.</param>
+      <returns>A collection of attributes associated with the field.</returns>
+    </member>
+    <member name="M:Trinity.Storage.ICellDescriptor.GetFieldDescriptors">
+      <summary>
+            Gets a collection of descriptors of the fields specified in TSL.
+            </summary>
+      <returns>A collection of field descriptors.</returns>
+    </member>
+    <member name="P:Trinity.Storage.ICellDescriptor.CellType">
+      <summary>
+            Gets an unsigned 16-bit integer representing the type of the cell. 
+            The value can be converted from/to the enum <c>CellType</c> generated by TSL.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.ICell">
+      <summary>
+            Exposes a group of generic methods to manipulate a cell. All cells defined in TSL implements <c>ICell</c>.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.ICell.GetField``1(System.String)">
+      <summary>
+            Get the value of the specified cell field.
+            </summary>
+      <typeparam name="T">
+            The desired type that the field is supposed 
+            to be interpreted as. Automatic type casting 
+            will be attempted if the desired type cannot be  
+            implicitly converted from the type of the field.
+            </typeparam>
+      <param name="fieldName">The name of the target field.</param>
+      <returns>The value of the field.</returns>
+    </member>
+    <member name="M:Trinity.Storage.ICell.SetField``1(System.String,``0)">
+      <summary>
+            Set the specified value to the specified cell field.
+            </summary>
+      <typeparam name="T">
+            The type of the value.
+            </typeparam>
+      <param name="fieldName">The name of the target field.</param>
+      <param name="value">
+            The value of the field. Automatic type casting 
+            will be attempted if the desired type cannot be
+            implicitly converted from the type of the field.
+            </param>
+    </member>
+    <member name="M:Trinity.Storage.ICell.ContainsField(System.String)">
+      <summary>
+            Tells if a field with the given name exists in the current cell.
+            </summary>
+      <param name="fieldName">The name of the field.</param>
+      <returns>The existence of the field.</returns>
+    </member>
+    <member name="M:Trinity.Storage.ICell.AppendToField``1(System.String,``0)">
+      <summary>
+            Append <paramref name="value" /> to the target field. Note that if the target field
+            is not appendable(string or list), calling this method is equivalent to calling <see cref="M:Trinity.Storage.ICell.SetField``1(System.String,``0)" />.
+            </summary>
+      <typeparam name="T">
+            The type of the value.
+            </typeparam>
+      <param name="fieldName">The name of the target field.</param>
+      <param name="value">The value to be appended. 
+            If the value is incompatible with the element 
+            type of the field, automatic type casting will be attempted.
+            </param>
+    </member>
+    <member name="M:Trinity.Storage.ICell.SelectFields``1(System.String,System.String)">
+      <summary>
+            Enumerates the fields tagged with a specified attribute, with all the fields converted to <typeparamref name="T" />.
+            If one of the field cannot be converted to <typeparamref name="T" />, an exception is thrown.
+            </summary>
+      <typeparam name="T">The type that the target fields are converted into.</typeparam>
+      <param name="attributeKey">The desired attribute. Pass <c>null</c> to select all fields in the cell.</param>
+      <param name="attributeValue">Optionally specifies the value of the attribute. When <paramref name="attributeKey" /> is <c>null</c>, this parameter is ignored.</param>
+      <returns>A list of key-value pairs representing the names and the values of the selected fields.</returns>
+    </member>
+    <member name="M:Trinity.Storage.ICell.EnumerateValues``1(System.String,System.String)">
+      <summary>
+            Enumerates the elements of the fields tagged with the specified attribute, with all the elements converted to <typeparamref name="T" />.
+            Each field satisfying the attribute conditions will be treated as a <c><![CDATA[System.Collections.Generic.IEnumerable<T>]]></c> of the desired type <typeparamref name="T" />.
+            All the elements are "flattened" and yielded into the result list so one cannot determine which field does an element come from.
+            A single-value field that is compatible with type <typeparamref name="T" /> is also treated as a <c><![CDATA[System.Collections.Generic.IEnumerable<T>]]></c> collection.
+            If the source of a value needs to be tracked, consider using <see cref="M:Trinity.Storage.ICell.SelectFields``1(System.String,System.String)" />.
+            </summary>
+      <typeparam name="T">The type to which the target elements are converted. If an element cannot be implicitly converted, an automatic conversion will be attempted.</typeparam>
+      <param name="attributeKey">The desired attribute. Pass <c>null</c> to select all fields in the cell.</param>
+      <param name="attributeValue">Optionally, specifies the value of the attribute. When <paramref name="attributeKey" /> is <c>null</c>, this parameter is ignored.</param>
+      <returns>A collection of elements matching the specified attribute.</returns>
+    </member>
+    <member name="P:Trinity.Storage.ICell.CellID">
+      <summary>
+            The 64-bit id of the cell.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.ICellAccessor">
+      <summary>
+            Exposes a group of generic methods to manipulate a cell via its accessor. All cell accessors generated from TSL implements <c>ICellAccessor</c>.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.IFieldDescriptor">
+      <summary>
+            Provides metadata associated with a field defined in TSL.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.IFieldDescriptor.Name">
+      <summary>
+            The name of the field.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.IFieldDescriptor.Optional">
+      <summary>
+        <c>true</c> if the field is marked as <c>optional</c>.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.IStorageSchema">
+      <summary>
+            Exposes methods for accessing the storage schema defined in a TSL storage extension assembly.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.IStorageSchema.GetCellType(System.String)">
+      <summary>
+            Converts a type string to a cell type id.
+            </summary>
+      <param name="cellTypeString">The type string to be converted.</param>
+      <returns>The converted cell type id.</returns>
+    </member>
+    <member name="P:Trinity.Storage.IStorageSchema.CellDescriptors">
+      <summary>
+            Enumerates descriptors for all cells defined in a TSL storage extension assembly.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.IStorageSchema.CellTypeSignatures">
+      <summary>
+            Gets the type signature strings for all cell types defined in a TSL storage extension assembly.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.CellInfo">
+      <summary>
+            Represents the storage information for a cell.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.CellInfo.CellPtr">
+      <summary>
+            Get a pointer to the content of the cell. Extra care should be taken
+            when manipulating directly on the cell buffer, as no boundary checks
+            are employed. Improper operations on the cell buffer will cause
+            data corruption and system crash.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.CellInfo.CellId">
+      <summary>
+            Get the id of the cell.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.CellInfo.CellEntryIndex">
+      <summary>
+            The index of the underlying hash slot correspondig to the current cell.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.CellInfo.CellType">
+      <summary>
+            Get the type of the current cell. Not available when type system not enabled.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.CellInfo.CellSize">
+      <summary>
+            Gets the size of current cell in bytes.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.LocalMemoryStorage">
+      <summary>
+            Provides methods for interacting with Trinity key-value store.
+            </summary>
+      <summary>
+            Provides methods for interacting with the in-memory store.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.Storage">
+      <summary>
+            Represents an abstract storage class. It defines a set of cell accessing and manipulation interfaces.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.Storage.Contains(System.Int64)">
+      <summary>
+            Determines whether there is a cell with the specified cell Id in Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>true if a cell whose Id is cellId is found; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.GetCellType(System.Int64,System.UInt16@)">
+      <summary>
+            Gets the type of the cell with specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellType">The type of the cell specified by cellId.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.AddCell(System.Int64,System.Byte*,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.AddCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.AddCell(System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.AddCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.AddCell(System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.UpdateCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.UpdateCell(System.Int64,System.Byte[])">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.UpdateCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.SaveCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.SaveCell(System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cell_id">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.SaveCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cell_id">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.SaveCell(System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.SaveCell(System.Int64,System.Byte*,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.LoadCell(System.Int64,System.Byte[]@)">
+      <summary>
+            Loads the bytes of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellBuff">The bytes of the cell. An empty byte array is returned if the cell is not found.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.LoadCell(System.Int64,System.Byte[]@,System.UInt16@)">
+      <summary>
+            Loads the bytes of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellBuff">The bytes of the cell. An empty byte array is returned if the cell is not found.</param>
+      <param name="cellType">The type of the cell, represented with a 16-bit unsigned integer.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.RemoveCell(System.Int64)">
+      <summary>
+            Removes the cell with the specified cell Id from the key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>true if removing succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.Storage.Dispose">
+      <summary>
+            Releases the resources used by the current storage instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.GetEnumerator">
+      <summary>
+            Returns an enumerator for all the cells stored in the local memory storage.
+            </summary>
+      <returns>An cell enumerator.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.CWriteAheadLog(System.Int64,System.Byte*,System.Int32,System.UInt16,Trinity.TSL.Lib.CellAccessOptions)">
+      <summary>
+            Logs a cell action to the persistent storage.
+            </summary>
+      <param name="cellId">The 64-bit cell id.</param>
+      <param name="cellPtr">A pointer pointing to the underlying cell buffer.</param>
+      <param name="cellSize">The size of the cell in bytes.</param>
+      <param name="cellType">A 16-bit unsigned integer indicating the cell type.</param>
+      <param name="options">An flag indicating a cell access option.</param>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.ReleaseCellLock(System.Int64,System.Int32)">
+      <summary>
+            Releases the cell lock associated with the current cell.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="entryIndex">The hash slot index corresponding to the current cell.</param>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.GetLockedCellInfo(System.Int64,System.Int32@,System.UInt16@,System.Byte*@,System.Int32@)">
+      <summary>
+            Locks the current cell and gets its underlying storage information.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="size">The size of the cell in bytes.</param>
+      <param name="type">A 16-bit unsigned integer indicating the cell type.</param>
+      <param name="cellPtr">A pointer pointing to the underlying cell buffer.</param>
+      <param name="entryIndex">The hash slot index corresponding to the current cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if the operation succeeds; <c>TrinityErrorCode.E_CELL_NOT_FOUND</c> if the specified cell is not found. </returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddOrUse(System.Int64,System.Byte[],System.Int32@,System.UInt16,System.Byte*@,System.Int32@)">
+      <summary>
+            Adds a new cell with the specified cell id or uses the cell if a cell with the specified cell id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="cellBuff">The buffer of the cell to be added.</param>
+      <param name="size">The size of the cell to be added. It will be overwritten to the size of the existing cell with specified cell id if it exists.</param>
+      <param name="cellType">A 16-bit unsigned integer indicating the cell type.</param>
+      <param name="cellPtr">A pointer pointing to the underlying cell buffer.</param>
+      <param name="cellEntryIndex">The hash slot index corresponding to the current cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_CELL_FOUND</c> if the specified cell is found; <c>TrinityErrorCode.E_WRONG_CELL_TYPE</c> if the cell type of the cell with the specified cellId does not match the specified cellType; <c>TrinityErrorCode.E_CELL_NOT_FOUND</c> if the specified cell is not found.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.ResizeCell(System.Int64,System.Int32,System.Int32,System.Int32)">
+      <summary>
+            Resizes the cell with the specified cell id.
+            </summary>
+      <param name="cell_id">A 64-bit cell id.</param>
+      <param name="cellEntryIndex">The hash slot index corresponding to the current cell.</param>
+      <param name="offset">The offset starting which the underlying storage needs to expand or shrink.</param>
+      <param name="delta">The size to expand or shrink, in bytes.</param>
+      <returns>The pointer pointing to the underlying cell buffer after resizing.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if saving succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(System.Int64,System.Byte[],System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if saving succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if saving succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if saving succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(System.Int64,System.Byte*,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if saving succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if saving succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if adding succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if adding succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if adding succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if adding succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(System.Int64,System.Byte*,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if adding succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if updating succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(System.Int64,System.Byte[])">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if updating succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if updating succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.LoadCell(System.Int64,System.Byte[]@,System.UInt16@)">
+      <summary>
+            Loads the bytes of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellBuff">The bytes of the cell. An empty byte array is returned if the cell is not found.</param>
+      <param name="cellType">The type of the cell, represented with a 16-bit unsigned integer.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.LoadCell(System.Int64,System.Byte[]@)">
+      <summary>
+            Loads the bytes of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellBuff">The bytes of the cell. An empty byte array is returned if the cell is not found.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.RemoveCell(System.Int64)">
+      <summary>
+            Removes the cell with the specified cell Id from the key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>
+        <c>TrinityErrorCode.E_SUCCESS</c> if removing succeeds; otherwise, an error code.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.GetCellType(System.Int64,System.UInt16@)">
+      <summary>
+            Gets the type of the cell with specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellType">The type of the cell specified by cellId.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.Contains(System.Int64)">
+      <summary>
+            Determines whether there is a cell with the specified cell Id in Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <returns>true if a cell whose Id is cellId is found; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.LockedGetCellSize(System.Int64,System.Int32,System.Int32@)">
+      <summary>
+            Gets the size of the current cell. The caller must hold the cell lock before calling this function.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="entryIndex">The hash slot index corresponding to the current cell.</param>
+      <param name="size">The size of the specified cell.</param>
+      <returns>A Trinity error code. This function always returns E_SUCCESS.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.NewRandomCellID">
+      <summary>
+            Generates a new random 64-bit cell id.
+            </summary>
+      <returns>A new 64-bit cell id.</returns>
+      <remarks>This is a thread-safe method that you can call to get a new cell id.</remarks>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.NextSequentialCellID">
+      <summary>
+            Generates a sequentially incremented 64-bit cell id.
+            </summary>
+      <returns>A new 64-bit cell id.</returns>
+      <remarks>This is a thread-safe method that you can call to get a new cell id.</remarks>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.LoadStorage">
+      <summary>
+            Loads Trinity key-value store from disk to main memory.
+            </summary>
+      <returns>true if loading succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveStorage">
+      <summary>
+            Dumps the in-memory key-value store to disk files.
+            </summary>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.ResetStorage">
+      <summary>
+            Resets local memory storage to the initial state. The content in the memory storage will be cleared. And the memory storage will be shrunk to the initial size.
+            </summary>
+      <returns>true if resetting succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveGenericCell(Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            </summary>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveGenericCell(System.Int64,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            The <paramref name="cellId" /> overrides the cell id in <paramref name="cell" />.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveGenericCell(Trinity.TSL.Lib.CellAccessOptions,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveGenericCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            The <paramref name="cellId" /> overrides the cell id in <paramref name="cell" />.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.LoadGenericCell(System.Int64)">
+      <summary>
+            Loads the content of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>An generic cell instance that implements <see cref="T:Trinity.Storage.ICell" /> interfaces.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.NewGenericCell(System.String)">
+      <summary>
+            Instantiate a new generic cell with the specified type.
+            </summary>
+      <param name="cellType">The string representation of the cell type.</param>
+      <returns>The allocated generic cell.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.NewGenericCell(System.Int64,System.String)">
+      <summary>
+            Instantiate a new generic cell with the specified type and a cell ID.
+            </summary>
+      <param name="cellId">Cell Id.</param>
+      <param name="cellType">The string representation of the cell type.</param>
+      <returns>The allocated generic cell.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.NewGenericCell(System.String,System.String)">
+      <summary>
+            Instantiate a new generic cell with the specified type and a cell ID.
+            </summary>
+      <param name="cellType">The string representation of the cell type.</param>
+      <param name="content">The json representation of the cell.</param>
+      <returns>The allocated generic cell.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UseGenericCell(System.Int64)">
+      <summary>
+            Allocate a generic cell accessor on the specified cell.
+            If <c><see cref="P:Trinity.TrinityConfig.ReadOnly" /> == false</c>,
+            on calling this method, it attempts to acquire the lock of the cell,
+            and blocks until it gets the lock.
+            </summary>
+      <param name="cellId">The id of the specified cell.</param>
+      <returns>A <see cref="T:Trinity.Storage.ICellAccessor" /> instance.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UseGenericCell(System.Int64,Trinity.TSL.Lib.CellAccessOptions)">
+      <summary>
+            Allocate a generic cell accessor on the specified cell.
+            If <c><see cref="P:Trinity.TrinityConfig.ReadOnly" /> == false</c>,
+            on calling this method, it attempts to acquire the lock of the cell,
+            and blocks until it gets the lock.
+            </summary>
+      <param name="cellId">The id of the specified cell.</param>
+      <param name="options">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <returns>A <see cref="T:Trinity.Storage.ICellAccessor" /> instance.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.GenericCell_Selector">
+      <summary>
+            Enumerates all the typed cells within the local memory storage.
+            The cells without a type (where CellType == 0) are skipped.
+            </summary>
+      <returns>All the typed cells within the local memory storage.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.GenericCellAccessor_Selector">
+      <summary>
+            Enumerates accessors of all the typed cells within the local memory storage.
+            The cells without a type (where CellType == 0) are skipped.
+            </summary>
+      <returns>The accessors of all the typed cells within the local memory storage.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[],System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.SaveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.AddCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[])">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.UpdateCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="cellSize">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.RemoveCell(Trinity.TSL.Lib.CellAccessOptions,System.Int64)">
+      <summary>
+            Removes the cell with the specified cell Id from the key-value store.
+            </summary>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>true if removing succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.GetTrunkId(System.Int64)">
+      <summary>
+            Get the Memory Trunk Id for the specified 64-bit cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>The Id of the memory trunk that stores the cell with the specified Id.</returns>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.#ctor">
+      <summary>
+            Initializes the LocalStorage instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.PauseMemoryDefragmentation">
+      <summary>
+            Pauses the memory defragmentation daemon thread.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.RestartMemoryDefragmentation">
+      <summary>
+            Restarts the memory defragmentation daemon thread.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.Finalize">
+      <summary>
+            Destructs current LocalMemoryStorage instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.LocalMemoryStorage.Dispose">
+      <summary>
+            Release the unmanaged resources.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.LocalMemoryStorage.TotalCommittedMemory">
+      <summary>
+            The total amount of memory consumed by memory trunks, in bytes.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.LocalMemoryStorage.TotalCellSize">
+      <summary>
+            The total size of cells stored in the system.
+            </summary>
+    </member>
+    <member name="P:Trinity.Storage.LocalMemoryStorage.CellCount">
+      <summary>
+            Gets the total cell count in local memory storage.
+            </summary>
+    </member>
+    <member name="T:Trinity.Storage.CellNotFoundException">
+      <summary>
+            The exception that is thrown when a cell is not found.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.CellNotFoundException.#ctor">
+      <summary>
+            Initialize a new CellNotFoundException instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.CellNotFoundException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the CellNotFoundException class with a specified error message.
+            </summary>
+      <param name="message">The message that describes the error.</param>
+    </member>
+    <member name="M:Trinity.Storage.CellNotFoundException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the CellNotFoundException class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+      <param name="message">The error message that explains the reason for the exception. </param>
+      <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not a null reference, the current exception is raised in a catch block that handles the inner exception. </param>
+    </member>
+    <member name="T:Trinity.Storage.CellTypeNotMatchException">
+      <summary>
+            The exception that is thrown when the specified cell type does not match the loaded cell type.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.CellTypeNotMatchException.#ctor">
+      <summary>
+            Initialize a new CellTypeNotMatchException instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.CellTypeNotMatchException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the CellTypeNotMatchException class with a specified error message.
+            </summary>
+      <param name="message">The message that describes the error.</param>
+    </member>
+    <member name="M:Trinity.Storage.CellTypeNotMatchException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the CellTypeNotMatchException class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+      <param name="message">The error message that explains the reason for the exception. </param>
+      <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not a null reference, the current exception is raised in a catch block that handles the inner exception. </param>
+    </member>
+    <member name="T:Trinity.Storage.DataTypeIncompatibleException">
+      <summary>
+            The exception that is thrown when attempting to apply operations on incompatible data types.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.DataTypeIncompatibleException.#ctor">
+      <summary>
+            Initialize a new DataTypeIncompatibleException instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.DataTypeIncompatibleException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the DataTypeIncompatibleException class with a specified error message.
+            </summary>
+      <param name="message">The message that describes the error.</param>
+    </member>
+    <member name="M:Trinity.Storage.DataTypeIncompatibleException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the DataTypeIncompatibleException class with a specified error message and a reference to the inner exception that is the cause of this exception.</summary>
+      <param name="message">The error message that explains the reason for the exception. </param>
+      <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException" /> parameter is not a null reference, the current exception is raised in a catch block that handles the inner exception. </param>
+    </member>
+    <member name="T:Trinity.Network.AvailabilityGroup">
+      <summary>
+            Represents an availability group which consists of a set of servers that are backups of each other.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.AvailabilityGroup.Id">
+      <summary>
+            The identifier of an availability group.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.AvailabilityGroup.ServerInstances">
+      <summary>
+            A list of <see cref="T:Trinity.Network.ServerInfo" />, each of which represents a Trinity server.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.AvailabilityGroup.#ctor(System.String,Trinity.Network.ServerInfo)">
+      <summary>
+            Initializes a new instance of <see cref="T:Trinity.Network.AvailabilityGroup" /> class with one server.
+            </summary>
+      <param name="id">The id of the availability group.</param>
+      <param name="serverInfo">A <see cref="T:Trinity.Network.ServerInfo" /> instance containing the information of the specified server.</param>
+    </member>
+    <member name="M:Trinity.Network.AvailabilityGroup.#ctor(System.String,System.Collections.Generic.List{Trinity.Network.ServerInfo})">
+      <summary>
+            Initializes a new instance of <see cref="T:Trinity.Network.AvailabilityGroup" /> class with a set of servers.
+            </summary>
+      <param name="id">The id of the availability group.</param>
+      <param name="replicas">A list of <see cref="T:Trinity.Network.ServerInfo" /> instances representing the replicas of the <see cref="T:Trinity.Network.AvailabilityGroup" />.</param>
+    </member>
+    <member name="M:Trinity.Network.AvailabilityGroup.GetStorageRootByIPE(System.Net.IPEndPoint)">
+      <summary>
+            Gets the storage root directory by the specified server <see cref="T:System.Net.IPEndPoint" />.
+            </summary>
+      <param name="ipe">A <see cref="T:System.Net.IPEndPoint" /> of the specified server.</param>
+      <returns>The storage root directory of the specified server.</returns>
+    </member>
+    <member name="M:Trinity.Network.AvailabilityGroup.Has(System.Net.IPEndPoint)">
+      <summary>
+            Determines whether the current availability group contains the specified server replica.
+            </summary>
+      <param name="ipe">A <see cref="T:System.Net.IPEndPoint" /> of the specified server.</param>
+      <returns>If the availability group contains the specified server instance, returns true; otherwise, returns false.</returns>
+    </member>
+    <member name="M:Trinity.Network.AvailabilityGroup.Has(System.Collections.Generic.List{System.Net.IPAddress},System.Int32)">
+      <summary>
+            Determines whether the current availability group contains the specified server replica.
+            </summary>
+      <param name="ips">A list of available <see cref="T:System.Net.IPAddress" /> instances for a given server.</param>
+      <param name="port">The network port of the server.</param>
+      <returns>If the availability group contains the specified server instance, returns true; otherwise, returns false.</returns>
+    </member>
+    <member name="M:Trinity.Network.AvailabilityGroup.HasLoopBackEndpoint(System.Int32)">
+      <summary>
+            Determines whether the current availability group contains a server that binds to a loopback endpoint.
+            </summary>
+      <param name="port">The network port of the server.</param>
+      <returns>If the availability group contains the specified server instance, returns true; otherwise, returns false.</returns>
+    </member>
+    <member name="T:Trinity.Storage.StorageCapacityProfile">
+      <summary>
+            Represents a collection of system capacity profiles.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max256M">
+      <summary>
+            Maximum 256 million cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max512M">
+      <summary>
+            Maximum 512 million cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max1G">
+      <summary>
+            Maximum 1 billion cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max2G">
+      <summary>
+            Maximum 2 billion cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max4G">
+      <summary>
+            Maximum 4 billion cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max8G">
+      <summary>
+            Maximum 8 billion cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max16G">
+      <summary>
+            Maximum 16 billion cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="F:Trinity.Storage.StorageCapacityProfile.Max32G">
+      <summary>
+            Maximum 32 billion cells supported by each LocalStorage instance.
+            </summary>
+    </member>
+    <member name="T:Trinity.TrinityConfig">
+      <summary>
+            A class for accessing and manipulating various system parameters.
+            </summary>
+    </member>
+    <member name="M:Trinity.TrinityConfig.SetPartitionMethod(Trinity.Network.GetServerIdByCellIdDelegate)">
+      <summary>
+            Sets a user-defined partitioning method.
+            </summary>
+      <param name="getServerIdByCellIdMethod">A GetServerIdByCellIdDelegate delegate method.</param>
+    </member>
+    <member name="F:Trinity.TrinityConfig.Servers">
+      <summary>
+            Represents a list of Trinity servers.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityConfig.Proxies">
+      <summary>
+            Represents a list of Trinity proxies.
+            </summary>
+    </member>
+    <member name="M:Trinity.TrinityConfig.AddServer(Trinity.Network.ServerInfo)">
+      <summary>
+            Adds a Trinity server.
+            </summary>
+      <param name="serverInfo">A <see cref="T:Trinity.Network.ServerInfo" /> instance.</param>
+    </member>
+    <member name="M:Trinity.TrinityConfig.AddProxy(Trinity.Network.ServerInfo)">
+      <summary>
+            Adds a Trinity proxy.
+            </summary>
+      <param name="proxy">A <see cref="T:Trinity.Network.ServerInfo" /> instance that represent a proxy.</param>
+    </member>
+    <member name="M:Trinity.TrinityConfig.SaveConfig">
+      <summary>
+            Save current configuration to the default config file trinity.xml. The default location of trinity.xml is the directory containing current Trinity assembly.
+            </summary>
+    </member>
+    <member name="M:Trinity.TrinityConfig.SaveConfig(System.String)">
+      <summary>
+            Save current configuration to the specified file.
+            </summary>
+      <param name="configFile">The config file to which the current configuration is written to.</param>
+    </member>
+    <member name="M:Trinity.TrinityConfig.LoadConfig">
+      <summary>
+            Load configuration from the default config file trinity.xml. The default location of trinity.xml is the directory containing current Trinity assembly.
+            </summary>
+    </member>
+    <member name="M:Trinity.TrinityConfig.LoadConfig(System.String)">
+      <summary>
+            Load configuration from the specified configuration file.
+            </summary>
+      <param name="configFile">The config file to read.</param>
+    </member>
+    <member name="F:Trinity.TrinityConfig.ExperimentalFeatureOn">
+      <summary>
+            Gets or sets the flag that indicates whether experimental features are enabled.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.LoggingLevel">
+      <summary>
+            Current system logging logLevel, default is LogLevel.Info.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.ReadOnly">
+      <summary>
+            Set readonly flag of the Trinity memory storage. The caller hereby promise that it does not modify the trinity memory storage.
+            Note:
+            1)	This flag should be switched on at the very beginning of your program.
+            2)	Once this flag is enabled, it cannot be disabled in the current process.
+            3)	The current process SHOULD NOT update/modify Trinity memory storage any more.  Operations, such as SaveCell(), AddCell(), cannot be called in this mode.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.StorageCapacity">
+      <summary>
+            Gets and Sets the current storage capacity profile.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.StorageRoot">
+      <summary>
+            Gets or sets the root data directory for current Trinity process.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.DefragInterval">
+      <summary>
+            Defragmentation frequency, Default Value = 600
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.AllServerInstances">
+      <summary>
+            Gets all the server instances.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.AllProxyInstances">
+      <summary>
+            GEts all the proxy instances.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.AllServerIPEndPoints">
+      <summary>
+            Gets a list of IPEndPoints corresponding to all the server instances.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.AllProxyIPEndPoints">
+      <summary>
+            Gets a list of IPEndPoints corresponding to all the proxy instances.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.ClientMaxConn">
+      <summary>
+            Indicates the number of network connections a Trinity client can connect to a Trinity server at most.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.ServerPort">
+      <summary>
+            The network port of the current Trinity server.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.HttpPort">
+      <summary>
+            The HTTP port of the current Trinity server/proxy
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.ProxyPort">
+      <summary>
+            The network port of the current Trinity proxy.
+            </summary>
+    </member>
+    <member name="P:Trinity.TrinityConfig.CurrentRunningMode">
+      <summary>
+            Gets or sets the running mode of current Trinity process.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.MessageSorter">
+      <summary>
+            Provides methods for partitioning messages.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageSorter.#ctor">
+      <summary>
+            Constructs a MessageSorter instance
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageSorter.#ctor(System.Collections.Generic.List{System.Int64})">
+      <summary>
+            Constructs a MessageSorter using a given cell Id list.
+            </summary>
+      <param name="cellIdList">A list of cell Ids.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageSorter.Add(System.Int64)">
+      <summary>
+            Adds a cellId to the sorter
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageSorter.GetCellRecipientList(System.Int32)">
+      <summary>
+            Get the cell id list for the specified server.
+            </summary>
+      <param name="serverId">The server Id.</param>
+      <returns>A list of cell Ids.</returns>
+    </member>
+    <member name="T:Trinity.Network.Messaging.SynReqHandler">
+      <summary>
+            Represents a message handler for a synchronous protocol without response.
+            </summary>
+      <param name="args">A synchronous request object.</param>
+    </member>
+    <member name="T:Trinity.Network.Messaging.SynReqRspHandler">
+      <summary>
+            Represents a message handler for a synchronous protocol with response.
+            </summary>
+      <param name="args">A synchronous request object.</param>
+    </member>
+    <member name="T:Trinity.Network.Messaging.AsyncReqHandler">
+      <summary>
+            Represents a message handler for an asynchronous protocol without response.
+            </summary>
+      <param name="args">An asynchronous request object.</param>
+    </member>
+    <member name="T:Trinity.Network.Messaging.TrinityMessage">
+      <summary>
+            Represents a binary network message.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessage.Offset">
+      <summary>
+            value = 8
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessage.Buffer">
+      <summary>
+            A pointer pointing to the underlying buffer.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityMessage.Size">
+      <summary>
+            The size of the underlying buffer.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityMessage.#ctor(System.Byte*,System.Int32)">
+      <summary>
+            Directly initialize a Trinity Message using "raw" message buffer
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityMessage.Dispose">
+      <summary>
+            Releases the unmanaged memory buffer used by the TrinityMessage.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityMessage.Equals(System.Object)">
+      <summary>
+            Determines whether this instance and a specified object, which must also be a <see cref="T:Trinity.Network.Messaging.TrinityMessage" /> object, have the same contents.
+            </summary>
+      <param name="obj">The object to compare to this instance.</param>
+      <returns>true if <paramref name="obj" /> is a <see cref="T:Trinity.Network.Messaging.TrinityMessage" /> and its contents are the same as this instance; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityMessage.op_Equality(Trinity.Network.Messaging.TrinityMessage,Trinity.Network.Messaging.TrinityMessage)">
+      <summary>
+            Determines whether the two specified TrinityMessages have the same contents.
+            </summary>
+      <param name="tm1">The first TrinityMessage to compare.</param>
+      <param name="tm2">The second TrinityMessage to compare.</param>
+      <returns>true if the two TrinityMessages have the same contents; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityMessage.op_Inequality(Trinity.Network.Messaging.TrinityMessage,Trinity.Network.Messaging.TrinityMessage)">
+      <summary>
+            Determines whether the two specified TrinityMessages have different contents.
+            </summary>
+      <param name="tm1">The first TrinityMessage to compare.</param>
+      <param name="tm2">The second TrinityMessage to compare.</param>
+      <returns>true if the two TrinityMessages have different contents; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Network.Messaging.TrinityMessage.GetHashCode">
+      <summary>
+            Returns the hash code for this TrinityMessage.
+            </summary>
+      <returns>A 32-bit signed integer hash code.</returns>
+    </member>
+    <member name="T:Trinity.Storage.MemoryCloud">
+      <summary>
+            Provides methods for interacting with the distributed memory store.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.BuildIndex">
+      <summary>
+            Sends build index command to each Trinity server.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.Search(System.String)">
+      <summary>
+            Returns a array of cell Ids that matches the search pattern.
+            </summary>
+      <param name="pattern">A pattern string used to do the match.</param>
+      <returns>A array of cell Ids for each server.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.Search(System.String,System.Int32)">
+      <summary>
+            Returns a array of cell Ids that matches the search pattern.
+            </summary>
+      <param name="pattern">A pattern string used to do the match.</param>
+      <param name="max">The max number of results to return.</param>
+      <returns>A array of cell Ids for each server.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveStorage">
+      <summary>
+            Dumps memory storages to disk files on all Trinity servers.
+            </summary>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.LoadStorage">
+      <summary>
+            Loads Trinity key-value store from disk to main memory on all Trinity servers.
+            </summary>
+      <returns>true if loading succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.ResetStorage">
+      <summary>
+            Resets local memory storage to the initial state on all Trinity servers. The content in the memory storage will be cleared. And the memory storage will be shrunk to the initial size.
+            </summary>
+      <returns>true if resetting succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.GetCommunicationModule``1">
+      <summary>
+            Gets an instance of a registered communication module on the started communication instance.
+            </summary>
+      <typeparam name="T">The type of the communication module.</typeparam>
+      <returns>A communication module object if a communication instance is started, and the module type is registered. Otherwise returns null.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.Dispose">
+      <summary>
+            Disposes current MemoryCloud instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.Dispose(System.Boolean)">
+      <summary>
+            Disposes current MemoryCloud instance.
+            </summary>
+      <param name="disposing">This parameter is not used.</param>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.Finalize">
+      <summary>
+            The deconstruction method of MemoryCloud class.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.IsLocalCell(System.Int64)">
+      <summary>
+            Indicates whether the cell with the specified Id is a local cell.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>true if the cell is in local storage; otherwise, false.</returns>
+    </member>
+    <member name="F:Trinity.Storage.MemoryCloud.StaticGetServerIdByCellId">
+      <summary>
+            Gets the Id of the server on which the cell with the specified cell Id is located.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.GetServerIdByCellId(System.Int64)">
+      <summary>
+            Gets the Id of the server on which the cell with the specified cell Id is located.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>A Trinity server Id.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SendMessageToServer(System.Int32,System.Byte*,System.Int32)">
+      <summary>
+            Send a binary message to the specified Trinity server.
+            </summary>
+      <param name="serverId">A 32-bit server id.</param>
+      <param name="buffer">A binary message buffer.</param>
+      <param name="size">The size of the message.</param>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SendMessageToServer(System.Int32,System.Byte*,System.Int32,Trinity.Network.Messaging.TrinityResponse@)">
+      <summary>
+            Send a binary message to the specified Trinity server.
+            </summary>
+      <param name="serverId">A 32-bit server id.</param>
+      <param name="buffer">A binary message buffer.</param>
+      <param name="size">The size of the message.</param>
+      <param name="response">The TrinityResponse object returned by the Trinity server.</param>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SendMessageToProxy(System.Int32,System.Byte*,System.Int32)">
+      <summary>
+            Send a binary message to the specified Trinity proxy.
+            </summary>
+      <param name="proxyId">A 32-bit proxy id.</param>
+      <param name="buffer">A binary message buffer.</param>
+      <param name="size">The size of the message.</param>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SendMessageToProxy(System.Int32,System.Byte*,System.Int32,Trinity.Network.Messaging.TrinityResponse@)">
+      <summary>
+            Send a binary message to the specified Trinity proxy.
+            </summary>
+      <param name="proxyId">A 32-bit proxy id.</param>
+      <param name="buffer">A binary message buffer.</param>
+      <param name="size">The size of the message.</param>
+      <param name="response">The TrinityResponse object returned by the Trinity proxy.</param>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveCell(System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveCell(System.Int64,System.Byte[],System.Int32,System.Int32,System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveCell(System.Int64,System.Byte[],System.UInt16)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="cellType">Indicates the cell type.</param>
+      <returns>true if saving succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.LoadCell(System.Int64,System.Byte[]@)">
+      <summary>
+            Loads the bytes of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellBuff">The bytes of the cell. An empty byte array is returned if the cell is not found.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.LoadCell(System.Int64,System.Byte[]@,System.UInt16@)">
+      <summary>
+            Loads the type and the content of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellBuff">The bytes of the cell. An empty byte array is returned if the cell is not found.</param>
+      <param name="cellType">The type of the cell, represented with a 16-bit unsigned integer.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.RemoveCell(System.Int64)">
+      <summary>
+            Removes the cell with the specified cell Id from the key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>true if removing succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.GetCellType(System.Int64,System.UInt16@)">
+      <summary>
+            Gets the type of the cell with specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="cellType">The type of the cell specified by cellId.</param>
+      <returns>A Trinity error code. Possible values are E_SUCCESS and E_NOT_FOUND.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.Contains(System.Int64)">
+      <summary>
+            Determines whether there is a cell with the specified cell Id in Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>true if a cell whose Id is cellId is found; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.AddCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.AddCell(System.Int64,System.Byte[])">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.AddCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Adds a new cell to the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if adding succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.UpdateCell(System.Int64,System.Byte*,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.UpdateCell(System.Int64,System.Byte[])">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.UpdateCell(System.Int64,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Updates an existing cell in the Trinity key-value store.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <param name="buff">A memory buffer that contains the cell content.</param>
+      <param name="offset">The byte offset into the buff.</param>
+      <param name="size">The size of the cell.</param>
+      <returns>true if updating succeeds; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.ShutDown(System.Int32)">
+      <summary>
+            Shutdown the server with the specified serverId.
+            </summary>
+      <param name="serverId">The id of the server.</param>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.ShutDown">
+      <summary>
+            Shutdown all running Trinity servers. This only works in the Client mode.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.LoadGenericCell(System.Int64)">
+      <summary>
+            Loads the content of the cell with the specified cell Id.
+            </summary>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>An generic cell instance that implements <see cref="T:Trinity.Storage.ICell" /> interfaces.</returns>
+    </member>
+    <member name="M:Trinity.Storage.MemoryCloud.SaveGenericCell(Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            </summary>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="P:Trinity.Storage.MemoryCloud.ServerCount">
+      <summary>
+            The number of servers in the cluster.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.ServerInfo">
+      <summary>
+            Contains the information for a server or proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.ServerInfo.HostName">
+      <summary>
+            The host name of the server or proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.ServerInfo.Port">
+      <summary>
+            The network port for the server or proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.ServerInfo.WorkingDirectory">
+      <summary>
+            The working directory of the server or proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.ServerInfo.StorageRoot">
+      <summary>
+            The storage root directory of the server or proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.ServerInfo.LoggingLevel">
+      <summary>
+            The logging level for the server or proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.ServerInfo.Id">
+      <summary>
+            The id of the server group that the server belongs to.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.ServerInfo.#ctor">
+      <summary>
+            Initializes an empty ServerInfo instance.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.ServerInfo.#ctor(System.String,System.Int32,System.String,Trinity.Diagnostics.LogLevel)">
+      <summary>
+            Initializes an ServerInfo instance with the specified hostname, port, working directory, and logging level.
+            </summary>
+      <param name="hostname">The host name of the server or proxy.</param>
+      <param name="port">The network port for the server or proxy.</param>
+      <param name="workingDir">The working directory of the server or proxy.</param>
+      <param name="logLevel">The logging level for the server or proxy.</param>
+    </member>
+    <member name="M:Trinity.Network.ServerInfo.#ctor(System.String,System.Int32,System.String,System.String,Trinity.Diagnostics.LogLevel,System.String)">
+      <summary>
+            Initializes an ServerInfo instance with the specified hostname, port, working directory, and logging level.
+            </summary>
+      <param name="hostname">The host name of the server or proxy.</param>
+      <param name="port">The network port for the server or proxy.</param>
+      <param name="workingDir">The working directory of the server or proxy.</param>
+      <param name="storageRoot">The storage root directory of the server or proxy.</param>
+      <param name="logLevel">The logging level for the server or proxy.</param>
+      <param name="id">The id of the current server.</param>
+    </member>
+    <member name="P:Trinity.Network.ServerInfo.EndPoint">
+      <summary>
+            Returns the IPEndPoint of the current Trinity server.
+            </summary>
+    </member>
+    <member name="T:Trinity.RunningMode">
+      <summary>
+            Specifies the running modes supported by Trinity.
+            </summary>
+    </member>
+    <member name="F:Trinity.RunningMode.Undefined">
+      <summary>
+            Undefined running mode.
+            </summary>
+    </member>
+    <member name="F:Trinity.RunningMode.Embedded">
+      <summary>
+            Embedded (in-process) mode.
+             </summary>
+    </member>
+    <member name="F:Trinity.RunningMode.Server">
+      <summary>
+            As a server.
+            </summary>
+    </member>
+    <member name="F:Trinity.RunningMode.Proxy">
+      <summary>
+            As a proxy.
+            </summary>
+    </member>
+    <member name="F:Trinity.RunningMode.Client">
+      <summary>
+            As a client.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.TrinityProxy">
+      <summary>
+            Represents a stock Trinity proxy.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.AsynReqArgs">
+      <summary>
+            Represents a network request object for an asynchronous protocol without response.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.AsynReqArgs.Buffer">
+      <summary>
+            The pointer pointing to the underlying buffer.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.AsynReqArgs.Offset">
+      <summary>
+            Offset of the message body.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.AsynReqArgs.Size">
+      <summary>
+            Message body size.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.MessageRegistry">
+      <summary>
+            Represents a registry that maintains the mapping from message types to their message handlers.
+            </summary>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageRegistry.RegisterMessageHandler(System.UInt16,Trinity.Network.Messaging.SynReqRspHandler)">
+      <summary>
+            Registers a synchronous message handler.
+            </summary>
+      <param name="msgId">A 16-bit unsigned message id.</param>
+      <param name="message_handler">A message hander for a synchronous protocol with response.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageRegistry.RegisterPreservedMessageHandler(System.UInt16,Trinity.Network.Messaging.SynReqRspHandler)">
+      <summary>
+            Registers a preserved synchronous message handler.
+            </summary>
+      <param name="msgId">A 16-bit unsigned message id.</param>
+      <param name="message_handler">A message hander for a synchronous protocol with response.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageRegistry.RegisterMessageHandler(System.UInt16,Trinity.Network.Messaging.SynReqHandler)">
+      <summary>
+            Registers a synchronous message handler.
+            </summary>
+      <param name="msgId">A 16-bit unsigned message id.</param>
+      <param name="message_handler">A message hander for a synchronous protocol without response.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageRegistry.RegisterPreservedMessageHandler(System.UInt16,Trinity.Network.Messaging.SynReqHandler)">
+      <summary>
+            Registers a preserved synchronous message handler.
+            </summary>
+      <param name="msgId">A 16-bit unsigned message id.</param>
+      <param name="message_handler">A message hander for a synchronous protocol without response.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageRegistry.RegisterMessageHandler(System.UInt16,Trinity.Network.Messaging.AsyncReqHandler)">
+      <summary>
+            Registers an asynchronous message handler.
+            </summary>
+      <param name="msgId">A 16-bit unsigned message id.</param>
+      <param name="message_handler">A message hander for an asynchronous protocol without response.</param>
+    </member>
+    <member name="M:Trinity.Network.Messaging.MessageRegistry.RegisterPreservedMessageHandler(System.UInt16,Trinity.Network.Messaging.AsyncReqHandler)">
+      <summary>
+            Registers a preserved asynchronous message handler.
+            </summary>
+      <param name="msgId">A 16-bit unsigned message id.</param>
+      <param name="message_handler">A message hander for an asynchronous protocol without response.</param>
+    </member>
+    <member name="T:Trinity.Network.Messaging.TrinityProtocol">
+      <summary>
+            Specifies the length and offset constants for the binary network message header. 
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.SocketMsgHeader">
+      <summary>
+            value = 4
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.TrinityMsgHeader">
+      <summary>
+            value = 4
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.TrinityMsgTypeOffset">
+      <summary>
+            value = 0
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.TrinityMsgIdOffset">
+      <summary>
+            value = 2
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.MsgHeader">
+      <summary>
+            value = 8
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.MsgTypeOffset">
+      <summary>
+            value = 4
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.TrinityProtocol.MsgIdOffset">
+      <summary>
+            value = 6
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.SynReqArgs">
+      <summary>
+            Represents a network request object for a synchronous protocol without response.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqArgs.Buffer">
+      <summary>
+            The pointer pointing to the underlying buffer.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqArgs.Offset">
+      <summary>
+            Offset of the message body.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqArgs.Size">
+      <summary>
+            Message body size.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.Messaging.SynReqRspArgs">
+      <summary>
+            Represents a network request object for a synchronous protocol with response.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqRspArgs.Buffer">
+      <summary>
+            The pointer pointing to the underlying buffer.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqRspArgs.Offset">
+      <summary>
+            Offset of the message body.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqRspArgs.Size">
+      <summary>
+            Message body size.
+            </summary>
+    </member>
+    <member name="F:Trinity.Network.Messaging.SynReqRspArgs.Response">
+      <summary>
+            The response object produced by the message handler.
+            </summary>
+    </member>
+    <member name="T:Trinity.Network.TrinityServer">
+      <summary>
+            Represents a stock Trinity server.
+            </summary>
+    </member>
+    <member name="T:Trinity.Daemon.BackgroundTaskRoutine">
+      <summary>
+            Represents a background operation.
+            </summary>
+      <returns>An updated execution interval.</returns>
+    </member>
+    <member name="T:Trinity.Daemon.BackgroundTask">
+      <summary>
+            Represents a background task.
+            </summary>
+    </member>
+    <member name="M:Trinity.Daemon.BackgroundTask.#ctor(Trinity.Daemon.BackgroundTaskRoutine,System.Int32)">
+      <summary>
+            Constructs a background task with the specified background operation and execution interval.
+            </summary>
+      <param name="task">An operation to be executed in background.</param>
+      <param name="interval">The time interval between invocations of <paramref name="task" />, in milliseconds.</param>
+    </member>
+    <member name="M:Trinity.Daemon.BackgroundTask.Execute(System.Int64)">
+      <summary>
+            Executes the task once it passes its execution time interval since last execution.
+            This routine is thread-safe.
+            </summary>
+    </member>
+    <member name="T:Trinity.Daemon.BackgroundThread">
+      <summary>
+            Represents a background thread that executes tasks in background.
+            </summary>
+    </member>
+    <member name="M:Trinity.Daemon.BackgroundThread.Start">
+      <summary>
+            Starts the background thread.
+            </summary>
+    </member>
+    <member name="M:Trinity.Daemon.BackgroundThread.AddBackgroundTask(Trinity.Daemon.BackgroundTask)">
+      <summary>
+            Adds a background task.
+            </summary>
+      <param name="task">A background task described by a <see cref="T:Trinity.Daemon.BackgroundTask" /> object.</param>
+    </member>
+    <member name="T:Trinity.Storage.IGenericCellOperations">
+      <summary>
+            Exposes methods for generic cell manipulation.
+            </summary>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.SaveGenericCell(Trinity.Storage.LocalMemoryStorage,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.SaveGenericCell(Trinity.Storage.LocalMemoryStorage,System.Int64,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            The <paramref name="cellId" /> overrides the cell id in <paramref name="cell" />.
+            </summary>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.SaveGenericCell(Trinity.Storage.LocalMemoryStorage,Trinity.TSL.Lib.CellAccessOptions,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.SaveGenericCell(Trinity.Storage.LocalMemoryStorage,Trinity.TSL.Lib.CellAccessOptions,System.Int64,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            The <paramref name="cellId" /> overrides the cell id in <paramref name="cell" />.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="writeAheadLogOptions">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <param name="cellId">A 64-bit cell id.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.LoadGenericCell(Trinity.Storage.LocalMemoryStorage,System.Int64)">
+      <summary>
+            Loads the content of the cell with the specified cell Id.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>An generic cell instance that implements <see cref="T:Trinity.Storage.ICell" /> interfaces.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.NewGenericCell(Trinity.Storage.LocalMemoryStorage,System.String)">
+      <summary>
+            Instantiate a new generic cell with the specified type.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cellType">The string representation of the cell type.</param>
+      <returns>The allocated generic cell.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.NewGenericCell(Trinity.Storage.LocalMemoryStorage,System.Int64,System.String)">
+      <summary>
+            Instantiate a new generic cell with the specified type and a cell ID.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cellId">Cell Id.</param>
+      <param name="cellType">The string representation of the cell type.</param>
+      <returns>The allocated generic cell.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.NewGenericCell(Trinity.Storage.LocalMemoryStorage,System.String,System.String)">
+      <summary>
+            Instantiate a new generic cell with the specified type and a cell ID.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cellType">The string representation of the cell type.</param>
+      <param name="content">The json representation of the cell.</param>
+      <returns>The allocated generic cell.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.UseGenericCell(Trinity.Storage.LocalMemoryStorage,System.Int64)">
+      <summary>
+            Allocate a generic cell accessor on the specified cell.
+            If <c><see cref="P:Trinity.TrinityConfig.ReadOnly" /> == false</c>,
+            on calling this method, it attempts to acquire the lock of the cell,
+            and blocks until it gets the lock.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cellId">The id of the specified cell.</param>
+      <returns>A <see cref="T:Trinity.Storage.ICellAccessor" /> instance.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.UseGenericCell(Trinity.Storage.LocalMemoryStorage,System.Int64,Trinity.TSL.Lib.CellAccessOptions)">
+      <summary>
+            Allocate a generic cell accessor on the specified cell.
+            If <c><see cref="P:Trinity.TrinityConfig.ReadOnly" /> == false</c>,
+            on calling this method, it attempts to acquire the lock of the cell,
+            and blocks until it gets the lock.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <param name="cellId">The id of the specified cell.</param>
+      <param name="options">Specifies write-ahead logging behavior. Valid values are CellAccessOptions.StrongLogAhead(default) and CellAccessOptions.WeakLogAhead. Other values are ignored.</param>
+      <returns>A <see cref="T:Trinity.Storage.ICellAccessor" /> instance.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.EnumerateGenericCells(Trinity.Storage.LocalMemoryStorage)">
+      <summary>
+            Enumerates all the typed cells within the local memory storage.
+            The cells without a type (where CellType == 0) are skipped.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <returns>All the typed cells within the local memory storage.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.EnumerateGenericCellAccessors(Trinity.Storage.LocalMemoryStorage)">
+      <summary>
+            Enumerates accessors of all the typed cells within the local memory storage.
+            The cells without a type (where CellType == 0) are skipped.
+            </summary>
+      <param name="storage">A <see cref="T:Trinity.Storage.LocalMemoryStorage" /> object.</param>
+      <returns>The accessors of all the typed cells within the local memory storage.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.LoadGenericCell(Trinity.Storage.MemoryCloud,System.Int64)">
+      <summary>
+            Loads the content of the cell with the specified cell Id.
+            </summary>
+      <param name="storage">The cloud storage to load from.</param>
+      <param name="cellId">A 64-bit cell Id.</param>
+      <returns>An generic cell instance that implements <see cref="T:Trinity.Storage.ICell" /> interfaces.</returns>
+    </member>
+    <member name="M:Trinity.Storage.IGenericCellOperations.SaveGenericCell(Trinity.Storage.MemoryCloud,Trinity.Storage.ICell)">
+      <summary>
+            Adds a new cell to the key-value store if the cell Id does not exist, or updates an existing cell in the key-value store if the cell Id already exists.
+            Note that the generic cell will be saved as a strongly typed cell. It can then be loaded into either a strongly-typed cell or a generic cell.
+            </summary>
+      <param name="storage">The cloud storage to save to.</param>
+      <param name="cell">The cell to be saved.</param>
+    </member>
+    <member name="T:Trinity.Core.Lib.BitHelper">
+      <summary>
+            A Helper class for manipulating blob related data structures.
+            </summary>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetBytes(System.String)">
+      <summary>
+            Returns the specified string as an array of bytes.
+            </summary>
+      <param name="value">The string to convert.</param>
+      <returns>An array of bytes.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetBytesWithHeader(System.String)">
+      <summary>
+            Returns the specified string as an array of bytes with a header containing the string buffer length.
+            </summary>
+      <param name="value">The string to convert.</param>
+      <returns>An array of bytes.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.WriteString(System.String,System.Byte[],System.Int32@)">
+      <summary>
+            Write the specified value to the specified buffer starting from the given offset.
+            </summary>
+      <param name="value">The string value to write.</param>
+      <param name="buffer">The buffer to write the string value in.</param>
+      <param name="offset">The offset of the buffer to write; the offset is added (value.Length*2) after the writing.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.WriteString(System.String,System.Byte*)">
+      <summary>
+            Write the specified value to the specified buffer.
+            </summary>
+      <param name="value">The string value to write.</param>
+      <param name="buffer">The buffer to write the string value in.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetString(System.Byte[])">
+      <summary>
+            Gets the corresponding string from the specified buffer.
+            </summary>
+      <param name="buffer">The string buffer.</param>
+      <returns>The corresponding string.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetString(System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Gets the corresponding string from the specified buffer starting from the given position.
+            </summary>
+      <param name="buffer">The string buffer.</param>
+      <param name="startIndex">The zero-based byte offset into the buffer.</param>
+      <param name="count">The number of bytes to convert.</param>
+      <returns>The corresponding string.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetString(System.Byte*,System.Int32)">
+      <summary>
+             Gets the corresponding string from the specified buffer.
+            </summary>
+      <param name="buffer">The string buffer.</param>
+      <param name="byteCount">The number of bytes to convert.</param>
+      <returns>The corresponding string.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetCharArray(System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Gets the corresponding char array from the specified buffer starting from the given position.
+            </summary>
+      <param name="buffer">The string buffer.</param>
+      <param name="startIndex">The zero-based byte offset into the buffer.</param>
+      <param name="count">The number of bytes to convert.</param>
+      <returns>The corresponding char array.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.WriteIPEndPoint(System.Net.IPEndPoint,System.Byte*)">
+      <summary>
+            Writes an IPEndPoint instance to the specified buffer.
+            </summary>
+      <param name="ipe">An IPEndPoint instance.</param>
+      <param name="buffer">The buffer to write the ipe in.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToIPAddress(System.Byte*,System.Int32)">
+      <summary>
+            Returns an IPAddress instance from eight bytes of the specified buffer.
+            </summary>
+      <param name="buffer">The buffer.</param>
+      <param name="startIndex">A zero-based byte offset into the buffer.</param>
+      <returns>An IPAddress instance.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToIPEndPoint(System.Byte*)">
+      <summary>
+            Returns an IPEndPoint instance from eight bytes of the specified buffer.
+            </summary>
+      <param name="buffer">The buffer.</param>
+      <returns>An IPEndPoint instance.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToInt32(System.Byte[],System.Int32)">
+      <summary>
+            Returns a 32-bit signed integer converted from four bytes at a specified position in a byte array.
+            </summary>
+      <param name="buffer">An array of bytes</param>
+      <param name="startIndex">The starting position within the byte array.</param>
+      <returns>A 32-bit signed integer formed by four bytes beginning at startIndex.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToBoolean(System.Byte[],System.Int32)">
+      <summary>
+            Returns a Boolean value converted from one byte at a specified position in a byte array.
+            </summary>
+      <param name="buffer">An array of bytes.</param>
+      <param name="startIndex">The starting position within the byte of array.</param>
+      <returns>true if the byte at startIndex in the byte array is nonzero; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToUInt16(System.Byte[],System.Int32)">
+      <summary>
+            Returns a 16-bit unsigned integer converted from two bytes at a specified position in a byte array.
+            </summary>
+      <param name="buffer">The array of bytes.</param>
+      <param name="startIndex">The starting position within the byte array.</param>
+      <returns>A 16-bit unsigned integer formed by two bytes beginning at startIndex.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToInt16(System.Byte[],System.Int32)">
+      <summary>
+            Returns a 16-bit signed integer converted from two bytes at a specified position in a byte array.
+            </summary>
+      <param name="buffer">The array of bytes.</param>
+      <param name="startIndex">The starting position within the byte array.</param>
+      <returns>A 16-bit signed integer formed by two bytes beginning at startIndex.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.ToInt64(System.Byte[],System.Int32)">
+      <summary>
+            Returns a 64-bit signed integer converted from eight bytes at a specified position in a byte array.
+            </summary>
+      <param name="buffer">The array of bytes.</param>
+      <param name="startIndex">The starting position within the byte array.</param>
+      <returns>A 64-bit signed integer formed by eight bytes beginning at startIndex.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetBytes(System.Decimal)">
+      <summary>
+            Returns the specified decimal value as an array of bytes.
+            </summary>
+      <param name="value">The decimal number to convert.</param>
+      <returns>An array of bytes with length 16.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.WriteDecimal(System.Decimal,System.Byte[],System.Int32@)">
+      <summary>
+            Writes the specified decimal value to the specified buffer starting from the specified offset.
+            </summary>
+      <param name="value">The decimal value.</param>
+      <param name="buffer">The memory buffer.</param>
+      <param name="offset">The zero-based byte offset into the buffer; the offset is added 16 bytes after the writing.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.GetDecimal(System.Byte[],System.Int32)">
+      <summary>
+            Returns a decimal value converted from 16 bytes at a specified position in a byte array.
+            </summary>
+      <param name="buffer">An array of bytes.</param>
+      <param name="startIndex">The starting position within the buffer.</param>
+      <returns>A decimal value.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.BitHelper.HammingDistance(System.UInt64*,System.UInt64*,System.Int32)">
+      <summary>
+            Returns the Hamming distance of the two specified ulong array buffer.
+            </summary>
+      <param name="arrayA">The first ulong array buffer.</param>
+      <param name="arrayB">The second ulong array buffer.</param>
+      <param name="size">The number of ulong elements to compare.</param>
+      <returns>The hamming distance between the two ulong array.</returns>
+    </member>
+    <member name="T:Trinity.Global">
+      <summary>
+            Provides global runtime information about the system. It also provides methods for safely exiting the system. This class cannot be inherited.
+            </summary>
+    </member>
+    <member name="M:Trinity.Global.Exit">
+      <summary>
+            Safely exit current Trinity instance. Logs will be flushed before exiting.
+            </summary>
+    </member>
+    <member name="M:Trinity.Global.Exit(System.Int32)">
+      <summary>
+            Safely exit current Trinity instance. Logs will be flushed before exiting.
+            </summary>
+      <param name="exitCode">Exit code to be given to the operating system.</param>
+    </member>
+    <member name="M:Trinity.Global.GetTotalMemoryUsage">
+      <summary>
+            Gets the total memory usage of all Trinity servers.
+            </summary>
+      <returns>Working set size in bytes.</returns>
+    </member>
+    <member name="P:Trinity.Global.ServerCount">
+      <summary>
+            Gets the number of servers in current Trinity cluster.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.ProxyCount">
+      <summary>
+            Gets the number of proxies in current Trinity cluster.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyServerID">
+      <summary>
+            Gets the ID of current server instance in the cluster.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyProxyID">
+      <summary>
+            Gets the ID of current proxy instance in the cluster.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.CloudStorage">
+      <summary>
+            Represents the memory cloud storage. Contains methods to access, manipulate cells in the memory cloud. Contains methods to send messages to other Trinity servers.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.LocalStorage">
+      <summary>
+            Represents the local memory storage. Contains methods to access, manipulate cells in the local memory storage. Contains methods to send loopback messages.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.StorageSchema">
+      <summary>
+            Represents the storage schema defined in the storage extension TSL assembly.
+            If no cell types are defined in referenced TSL assemblies, an empty schema
+            will be returned.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.CommunicationSchema">
+      <summary>
+            Represents the communication schema associated with the started TrinityServer or TrinityProxy.
+            If no server/proxy are started, or a default server/proxy is started, an empty schema
+            will be returned.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyAssemblyPath">
+      <summary>
+            Gets the path or UNC location of the running Trinity instance.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyIPAddress">
+      <summary>
+            Gets the IPAddress bound to current Trinity server.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyIPAddresses">
+      <summary>
+            Gets all the IPAddresses bound to current Trinity server.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyIPEndPoint">
+      <summary>
+            Gets the IPEndPoint bound to current Trinity instance.
+            </summary>
+    </member>
+    <member name="P:Trinity.Global.MyProxyIPEndPoint">
+      <summary>
+            Gets the IPEndPoint bound to current Trinity proxy.
+            </summary>
+    </member>
+    <member name="T:Trinity.Core.Lib.HashHelper">
+      <summary>
+            A helper class for various hash functions.
+            </summary>
+    </member>
+    <member name="M:Trinity.Core.Lib.HashHelper.HashString2Int64(System.String)">
+      <summary>
+            Gets a 64-bit signed integer hash code of the specified string.
+            </summary>
+      <param name="value">The string value.</param>
+      <returns>A 64-bit signed integer hash code.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.HashHelper.HashBytes(System.Byte[])">
+      <summary>
+            Gets the hash code of the byte array.
+            </summary>
+      <param name="buffer">The array of bytes.</param>
+      <returns>The hash code.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.HashHelper.HashBytes(System.Byte*,System.Int32)">
+      <summary>
+            Gets the hash code of the memory buffer.
+            </summary>
+      <param name="buffer">The memory buffer.</param>
+      <param name="count">The number of bytes to access.</param>
+      <returns>The hash code.</returns>
+    </member>
+    <member name="T:Trinity.Core.Lib.CellIDFactory">
+      <summary>
+            A utility class for generating 64-bit cell ids.
+            </summary>
+    </member>
+    <member name="M:Trinity.Core.Lib.CellIDFactory.NewCellID">
+      <summary>
+            Generates a new random 64-bit cell id.
+            </summary>
+      <returns>A new 64-bit cell id.</returns>
+      <remarks>This is a thread-safe method that you can call to get a new cell id.</remarks>
+    </member>
+    <member name="M:Trinity.Core.Lib.CellIDFactory.NextSequentialCellID">
+      <summary>
+            Generates a sequentially incremented 64-bit cell id.
+            </summary>
+      <returns>A new 64-bit cell id.</returns>
+      <remarks>This is a thread-safe method that you can call to get a new cell id.</remarks>
+    </member>
+    <member name="T:Trinity.Core.Lib.Memory">
+      <summary>
+            Provides methods for memory management.
+            </summary>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.memmove(System.Void*,System.Void*,System.UInt64)">
+      <summary>
+            C-style memmove. Copies a specified number of bytes from a source buffer to a destination buffer. 
+            If some regions of the source and destination buffer overlap, the bytes of the overlapping region are copied before being overwritten.
+            </summary>
+      <param name="dst">The destination buffer.</param>
+      <param name="src">The source buffer.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.memcpy(System.Void*,System.Void*,System.UInt64)">
+      <summary>
+            C-style memcpy. Copies a specified number of bytes from a source buffer to a destination buffer.
+            </summary>
+      <param name="dst">The destination buffer.</param>
+      <param name="src">The source buffer.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.memcmp(System.Void*,System.Void*,System.UInt64)">
+      <summary>
+            C-style memcmp. Compares the specified number of bytes in two buffers and returns a value indicating their relationship.
+            </summary>
+      <param name="ptr1">Pointer to the first buffer.</param>
+      <param name="ptr2">Pointer to the second buffer.</param>
+      <param name="count">The number of bytes to compare.</param>
+      <returns>Zero indicates the bytes of two buffers are identical. A value less than zero indicates the first buffer less than the second. Otherwise, a value great than zero is returned.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.memset(System.Void*,System.Int32,System.UInt64)">
+      <summary>
+            C-style memset. Sets the specified number of bytes in a buffer to the specified value.
+            </summary>
+      <param name="buff">Pointer to memory buffer.</param>
+      <param name="value">Value to set.</param>
+      <param name="count">The number of bytes to set.</param>
+      <returns>The pointer of memory buffer is returned.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.realloc(System.Void*,System.UInt64)">
+      <summary>
+            C-style realloc. Reallocate a previously allocated memory buffer. The content of the memory buffer is preserved up to the shorter of the old and new buffer. The expanded portion of the new buffer is indeterminate. If size is zero, the previously allocated buffer is freed, NULL is returned. If buff is NULL, it behaves the same way as malloc.
+            </summary>
+      <param name="buff">Pointer to a previously allocated memory buffer.</param>
+      <param name="size">Number of bytes of the reallocated memory buffer.</param>
+      <returns>A pointer to the reallocated memory buffer.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.malloc(System.UInt64)">
+      <summary>
+            C-style malloc. Allocates specified number of bytes of memory.
+            </summary>
+      <param name="size">Number of bytes to allocate.</param>
+      <returns>Pointer to the allocated memory buffer. A NULL pointer is returned if there is insufficient memory available. </returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.free(System.Void*)">
+      <summary>
+            C-style free. Deallocate a previously allocated memory buffer. 
+            If buff is NULL, the pointer is ignored and free immediately returns. 
+            </summary>
+      <param name="buff">Pointer to a previously allocated memory buffer.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory._aligned_malloc(System.UInt64,System.UInt64)">
+      <summary>
+            C-style _aligned_malloc. Allocates memory on a specified alignment boundary.
+            </summary>
+      <param name="size">Size of the requested memory allocation.</param>
+      <param name="alignment">The alignment value, which must be an integer power of 2.</param>
+      <returns>A pointer to the memory block that was allocated or NULL if the operation failed. The pointer is a multiple of alignment.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory._aligned_malloc(System.Int64,System.Int64)">
+      <summary>
+            C-style _aligned_malloc. Allocates memory on a specified alignment boundary.
+            </summary>
+      <param name="size">Size of the requested memory allocation.</param>
+      <param name="alignment">The alignment value, which must be an integer power of 2.</param>
+      <returns>A pointer to the memory block that was allocated or NULL if the operation failed. The pointer is a multiple of alignment.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory._aligned_free(System.Void*)">
+      <summary>
+            C-style _aligned_free. Frees a block of memory that was allocated with _aligned_malloc or _aligned_offset_malloc.
+            </summary>
+      <param name="mem">A pointer to the memory block that was returned to the _aligned_malloc or _aligned_offset_malloc function.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.AlignedAlloc(System.Int64,System.Int64)">
+      <summary>
+            Aligned memory allocation. Compared with _aligned_malloc, this method zeros out the allocated memory. The size must be 8x bytes.
+            </summary>
+      <param name="size">Size of the requested memory allocation.</param>
+      <param name="alignment">The alignment value, which must be an integer power of 2.</param>
+      <returns>A pointer to the memory block that was allocated or NULL if the operation failed. The pointer is a multiple of alignment.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Compare(System.Byte*,System.Byte*,System.Int32)">
+      <summary>
+            Compare bytes in two buffers.
+            </summary>
+      <param name="buff1">First buffer.</param>
+      <param name="buff2">Second buffer.</param>
+      <param name="count">Number of bytes to compare.</param>
+      <returns>true if buff1 identical to buff2, otherwise false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Compare(System.Byte[],System.Byte[])">
+      <summary>
+            Compare bytes in two buffers.
+            </summary>
+      <param name="buff1">First buffer.</param>
+      <param name="buff2">Second buffer.</param>
+      <returns>true if buff1 identical to buff2, otherwise false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Compare(System.Byte[],System.Byte[],System.Int32)">
+      <summary>
+            Compare bytes in two buffers.
+            </summary>
+      <param name="buff1">First buffer.</param>
+      <param name="buff2">Second buffer.</param>
+      <param name="count">Number of bytes to compare.</param>
+      <returns>true if buff1 identical to buff2, otherwise false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Compare(System.Byte*,System.Byte[])">
+      <summary>
+            Compare bytes in two buffers.
+            </summary>
+      <param name="buff1">First buffer.</param>
+      <param name="buff2">Second buffer.</param>
+      <returns>true if buff1 identical to buff2, otherwise false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Compare(System.Byte[],System.Byte*)">
+      <summary>
+            Compare bytes in two buffers.
+            </summary>
+      <param name="buff1">First buffer.</param>
+      <param name="buff2">Second buffer.</param>
+      <returns>true if buff1 identical to buff2, otherwise false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Void*,System.Void*,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer to a destination buffer.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Byte[],System.Void*,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer to a destination buffer.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Void*,System.Int32,System.Void*,System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into ptr1.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Byte[],System.Int32,System.Void*,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer starting at a particular offset to a destination buffer.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Byte[],System.Int32,System.Void*,System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into ptr1.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Void*,System.Int32,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into ptr1.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Byte[],System.Int32,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into ptr1.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Byte[],System.Int32,System.Int64[],System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into ptr1.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Int64[],System.Int32,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from an array of 64-bit integer starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into ptr2.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into ptr1.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Double[],System.Int32,System.Void*,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from an array of 64-bit double starting at a particular offset to a destination buffer.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="srcOffset">The byte offset into source array of double values.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Void*,System.Double[],System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from a source buffer to an array of 64-bit double starting at a particular offset.
+            </summary>
+      <param name="src">The source buffer.</param>
+      <param name="dst">The destination buffer.</param>
+      <param name="dstOffset">The byte offset into the destination array of double values.</param>
+      <param name="count">The number of bytes to copy.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.Memory.Copy(System.Double[],System.Int32,System.Double[],System.Int32,System.Int32)">
+      <summary>
+            Copies a specified number of bytes from an array of 64-bit double starting at a particular offset to a destination buffer starting at a particular offset.
+            </summary>
+      <param name="src">The source array of double values.</param>
+      <param name="srcOffset">The offset into the source array.</param>
+      <param name="dst">The destination array of double values.</param>
+      <param name="dstOffset">THe offset into the destination array.</param>
+      <param name="count">Note: The number of double values.</param>
+    </member>
+    <member name="T:Trinity.Core.Lib.SpinLockInt32">
+      <summary>
+            Represents a mutual exclusive spinlock.
+            </summary>
+    </member>
+    <member name="M:Trinity.Core.Lib.SpinLockInt32.GetLock(System.Int32@)">
+      <summary>
+            Acquires the lock.
+            </summary>
+      <param name="spinlock">A 32-bit integer that represents the spinlock.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.SpinLockInt32.GetLock_Aggressive(System.Int32@)">
+      <summary>
+            Accquires the lock in an aggressive manner.
+            </summary>
+      <param name="spinlock">A 32-bit integer that represents the spinlock.</param>
+    </member>
+    <member name="M:Trinity.Core.Lib.SpinLockInt32.TryGetLock(System.Int32@)">
+      <summary>
+            Attempts to acquire the lock.
+            </summary>
+      <param name="spinlock">A 32-bit integer that represents the spinlock.</param>
+      <returns>true if the lock is acquired; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.SpinLockInt32.TryGetLock(System.Int32@,System.Int32)">
+      <summary>
+            Attempts to acquire the lock at most <paramref name="retry" /> times.
+            </summary>
+      <param name="spinlock">A 32-bit integer that represents the spinlock.</param>
+      <param name="retry">A integer that indicates the max retry times.</param>
+      <returns>true if the lock is acquired; otherwise, false.</returns>
+    </member>
+    <member name="M:Trinity.Core.Lib.SpinLockInt32.ReleaseLock(System.Int32@)">
+      <summary>
+            Release the lock.
+            </summary>
+      <param name="spinlock">A 32-bit integer that represents the spinlock.</param>
+    </member>
+    <member name="T:Trinity.TrinityErrorCode">
+      <summary>
+            Represents the collection of Trinity error code.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_INVALID_ARGUMENTS">
+      <summary>
+            Indicates invalid arguments when calling a method.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_CELL_TYPE_NOT_ENABLED">
+      <summary>
+            Indicates the cell type feature is not enabled.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_WRONG_CELL_TYPE">
+      <summary>
+            Represents an error when the expected cell type mismatches the existing one in the system.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_NETWORK_SEND_FAILURE">
+      <summary>
+            Represents network sending failure.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_NO_FREE_ENTRY">
+      <summary>
+            Represents an error when no free memory slot is available when adding a new cell to the system.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_DUPLICATED_CELL">
+      <summary>
+            Represents an error occurred when a duplicate cell is found when adding a new cell to the system.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_RETRY">
+      <summary>
+            Represents a temporary failure of a system operation. The failed operation should be retried.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_CELL_NOT_FOUND">
+      <summary>
+            Represents an error of not finding a cell.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_FAILURE">
+      <summary>
+            Represents a general failure.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_SUCCESS">
+      <summary>
+            Represents a general success status.
+            </summary>
+    </member>
+    <member name="F:Trinity.TrinityErrorCode.E_CELL_FOUND">
+      <summary>
+            Represents a status that an expected cell is found.
+            </summary>
+    </member>
+    <member name="T:Trinity.TSL.Lib.CellAccessOptions">
+      <summary>
+            Represents option flags for cell access.
+            </summary>
+    </member>
+    <member name="F:Trinity.TSL.Lib.CellAccessOptions.ThrowExceptionOnCellNotFound">
+      <summary>
+            Throws an exception when a cell is not found.
+            </summary>
+    </member>
+    <member name="F:Trinity.TSL.Lib.CellAccessOptions.ReturnNullOnCellNotFound">
+      <summary>
+            Returns null when a cell is not found.
+            </summary>
+    </member>
+    <member name="F:Trinity.TSL.Lib.CellAccessOptions.CreateNewOnCellNotFound">
+      <summary>
+            Creates a new cell when a cell is not found.
+            </summary>
+    </member>
+    <member name="F:Trinity.TSL.Lib.CellAccessOptions.StrongLogAhead">
+      <summary>
+            Specifies that write-ahead-log should be performed with strong durability.
+            </summary>
+    </member>
+    <member name="F:Trinity.TSL.Lib.CellAccessOptions.WeakLogAhead">
+      <summary>
+            Specifies that write-ahead-log should be performed with weak durability. This option brings better performance,
+            but the durability may be degraded when this option is used.
+            </summary>
+    </member>
+    <member name="T:Trinity.TSL.Lib.ResizeFunctionDelegate">
+      <summary>
+            Represents a reference to a resize function, which will be called when the underlying storage is resized.
+            </summary>
+      <param name="ptr">A point pointing to the underlying storage of the current data structure.</param>
+      <param name="offset">The offset starting which the underlying storage needs to expand or shrink.</param>
+      <param name="delta">The size to expand or shrink, in bytes.</param>
+      <returns>The pointer pointing to the underlying storage after resizing.</returns>
+    </member>
+    <member name="T:Trinity.TSL.Lib.JsonStringProcessor">
+      <summary>
+            Provides escaping/unescaping methods for json strings.
+            </summary>
+    </member>
+    <member name="M:Trinity.TSL.Lib.JsonStringProcessor.unescape(System.String)">
+      <summary>
+            Unescapes a json value string.
+            </summary>
+      <param name="json">The escaped value.</param>
+      <returns>The unescaped value.</returns>
+    </member>
+    <member name="M:Trinity.TSL.Lib.JsonStringProcessor.escape(System.String)">
+      <summary>
+            Escapes a json value string.
+            </summary>
+      <param name="raw">The unescaped raw value string.</param>
+      <returns>The escaped string.</returns>
+    </member>
+    <member name="T:Trinity.Utilities.StringLookupTable">
+      <summary>
+            Provides a fast lookup table for a small set of strings.
+            This utility is mainly used by TSL.
+            </summary>
+    </member>
+    <member name="M:Trinity.Utilities.StringLookupTable.#ctor(System.String[])">
+      <summary>
+            Construct a string to int lookup table with the given strings.
+            </summary>
+      <param name="strings">The strings to be placed in the lookup table.</param>
+    </member>
+    <member name="M:Trinity.Utilities.StringLookupTable.Lookup(System.String)">
+      <summary>
+            Perform a lookup.
+            </summary>
+      <param name="input">The input string to look up.</param>
+      <returns>If the input string exists in the lookup table, return its index. Otherwise return -1.</returns>
+    </member>
+    <member name="T:Trinity.Utilities.FileUtility">
+      <summary>
+            Provides file related utility functions.
+            </summary>
+    </member>
+    <member name="M:Trinity.Utilities.FileUtility.CompletePath(System.String,System.Boolean)">
+      <summary>
+            Complete the given file directory path to make it end with directory separator char.
+            </summary>
+      <param name="path">The directory path.</param>
+      <param name="create_nonexistent">The directory is created if true; otherwise do thing.</param>
+      <returns>The completed directory path.</returns>
+    </member>
+    <member name="P:Trinity.Utilities.FileUtility.RandomFileNameWithoutExtension">
+      <summary>
+            Gets a random file name without extension.
+            </summary>
+    </member>
+    <member name="T:Trinity.Diagnostics.HexDump">
+      <summary>
+            A utility class for dumping binary data in hexadecimal format.
+            </summary>
+    </member>
+    <member name="M:Trinity.Diagnostics.HexDump.Dump(System.Byte[])">
+      <summary>
+            Dumps a byte array to the standard output in hexadecimal format.
+            </summary>
+      <param name="bytes">The byte array from which bytes are read.</param>
+    </member>
+    <member name="M:Trinity.Diagnostics.HexDump.PrintBits(System.Byte)">
+      <summary>
+            Prints the bits of the specified byte value to the console.
+            </summary>
+      <param name="value">The byte value.</param>
+    </member>
+    <member name="M:Trinity.Diagnostics.HexDump.PrintBits(System.Int32)">
+      <summary>
+            Prints the bits of the specified 32-bit signed integer value to the console.
+            </summary>
+      <param name="value">The 32-bit integer value.</param>
+    </member>
+    <member name="M:Trinity.Diagnostics.HexDump.PrintGuid(System.Guid)">
+      <summary>
+            Print the guid byte by byte.
+            </summary>
+      <param name="guid">The specified Guid instance.</param>
+    </member>
+    <member name="M:Trinity.Diagnostics.HexDump.ToString(System.Byte*,System.Int32,System.Int32)">
+      <summary>
+            Outputs the hexadecimal dump to a string.
+            </summary>
+      <param name="bytes">The buffer to dump.</param>
+      <param name="length">The length of the specified buffer.</param>
+      <param name="max">Max number of bytes to dump.</param>
+      <returns>A string that represents the hexadecimal dump.</returns>
+    </member>
+    <member name="T:Trinity.Diagnostics.LogLevel">
+      <summary>
+            Specifies a set of available logging levels.
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Off">
+      <summary>
+            No message is logged
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Fatal">
+      <summary>
+            Only unrecoverable system errors are logged
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Error">
+      <summary>
+            Unrecoverable system errors and application logLevel errors are logged
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Warning">
+      <summary>
+            Fatal system error, application error and application warning are logged
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Info">
+      <summary>
+            All errors, warnings and notable application messages are logged
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Debug">
+      <summary>
+            All errors, warnings, application messages and debugging messages are logged
+            </summary>
+    </member>
+    <member name="F:Trinity.Diagnostics.LogLevel.Verbose">
+      <summary>
+            All messages are logged
+            </summary>
+    </member>
+    <member name="T:Trinity.Diagnostics.Log">
+      <summary>
+            A utility class for logging. 
+            </summary>
+    </member>
+    <member name="M:Trinity.Diagnostics.Log.Flush">
+      <summary>
+            Flushes the log content to the disk immediately. Note that for
+            messages with LogLevel equal to LogLevel.Info or higher, the log
+            will be automatically flushed immediately. Lower priority logs
+            (LogLevel.Debug and LogLevel.Verbose) will be flushed periodically.
+            </summary>
+    </member>
+    <member name="M:Trinity.Diagnostics.Log.WriteLine(System.String,System.Object[])">
+      <summary>
+            Writes the text representation of the specified array of objects, followed by the current line terminator, to the log using the specified format information.
+            </summary>
+      <param name="format">A composite format string.</param>
+      <param name="arg">An array of objects to write using format.</param>
+    </member>
+    <member name="M:Trinity.Diagnostics.Log.WriteLine(Trinity.Diagnostics.LogLevel,System.String,System.Object[])">
+      <summary>
+            Writes the text representation of the specified array of objects, followed by the current line terminator, to the log using the specified format information at the specified logging level.
+            </summary>
+      <param name="logLevel">The logging level at which the message is written.</param>
+      <param name="format">A composite format string.</param>
+      <param name="arg">An array of objects to write using format.</param>
+    </member>
+    <member name="P:Trinity.Diagnostics.Log.EchoOnConsole">
+      <summary>
+            Gets of sets a value indicating whether the logged messages are echoed to the Console.
+            </summary>
+    </member>
+    <member name="T:Trinity.Utilities.IPAddressComparer">
+      <summary>
+            Defines a method for comparing two <see cref="T:System.Net.IPAddress" /> objects.
+            </summary>
+    </member>
+    <member name="M:Trinity.Utilities.IPAddressComparer.Compare(System.Net.IPAddress,System.Net.IPAddress)">
+      <summary>
+            Compares two IPAddresses and returns an indication of their relative order.
+            </summary>
+      <param name="ipA">An IPAddress to compare to <paramref name="ipB" />.</param>
+      <param name="ipB">An IPAddress to compare to <paramref name="ipA" />.</param>
+      <returns>
+            A signed integer that indicates the partial order of <paramref name="ipA" /> and <paramref name="ipB" />. 
+            A value less than zero is returned if <paramref name="ipA" /> is ordered before <paramref name="ipB" />. 
+            Zero is returned if <paramref name="ipA" /> equals <paramref name="ipB" />. A value greater than zero is returned if <paramref name="ipA" /> is ordered after <paramref name="ipB" />.
+            </returns>
+    </member>
+    <member name="T:Trinity.Utilities.IPEndPointComparer">
+      <summary>
+            Defines a method for comparing two <see cref="T:System.Net.IPEndPoint" /> objects.
+            </summary>
+    </member>
+    <member name="M:Trinity.Utilities.IPEndPointComparer.Compare(System.Net.IPEndPoint,System.Net.IPEndPoint)">
+      <summary>
+            Compares two IPEndPoints and returns an indication of their relative order.
+            </summary>
+      <param name="ipeA">An IPEndPoint to compare to <paramref name="ipeB" />.</param>
+      <param name="ipeB">An IPEndPoint to compare to <paramref name="ipeA" />.</param>
+      <returns>
+            A signed integer that indicates the partial order of <paramref name="ipeA" /> and <paramref name="ipeB" />. 
+            A value less than zero is returned if <paramref name="ipeA" /> is ordered before <paramref name="ipeB" />. 
+            Zero is returned if <paramref name="ipeA" /> equals <paramref name="ipeB" />. A value greater than zero is returned if <paramref name="ipeA" /> is ordered after <paramref name="ipeB" />.
+            </returns>
+    </member>
+  </members>
+</doc>

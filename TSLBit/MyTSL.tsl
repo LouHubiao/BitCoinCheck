@@ -1,0 +1,102 @@
+struct Circle{
+	string beginAddr;
+	string endAddr;	
+}
+
+struct In
+{
+	CellId tx_index;	//发起方比特币来源
+	string addr;		//发起方地址
+}
+
+cell struct Tx
+{
+	long time;			//支付发生的时间
+	string hash;		//支付的64位hash值
+	List<In> ins;		//支付发起方信息
+	List<string> outs;	//支付接收方地址列表
+	long amount;		//支付金额
+	int isAmount;		//支付金额可疑
+	int isFreq;			//支付频率可疑
+	bool isCycle;		//支付存在环
+}
+
+cell AddrInfo{
+	List<long> txs;		//某个地址相关的所有支付记录
+}
+
+cell TxCellID{
+	long cellID;	
+}
+
+struct jsonRes{
+	string value;	
+}
+
+//addr request
+struct addrRequest{
+	string addr;
+	long amount;
+	int freq;
+	long freq_amount;
+	int cycle;
+	long cycle_amount;
+}
+protocol GetTxByAddrHttp
+{
+	Type: HTTP;
+    Request: addrRequest;
+    Response: jsonRes;
+}
+
+//amount statistic request
+struct amountRequest{
+	long amount;	
+}
+protocol GetStatisticByAmountHttp
+{
+	Type: HTTP;
+    Request: amountRequest;
+    Response: jsonRes;
+}
+
+//freq statistic request
+struct freqRequest{
+	int interval;
+	long amount;	
+}
+protocol GetStatisticByFreqHttp
+{
+	Type: HTTP;
+    Request: freqRequest;
+    Response: jsonRes;
+}
+
+//cycle statistic request
+struct cycleRequest{
+	int cycleCount;
+	long amount;	
+}
+protocol GetStatisticByCycleHttp
+{
+	Type: HTTP;
+    Request: cycleRequest;
+    Response: jsonRes;
+}
+
+//default statistic request
+protocol GetStatisticByDefault
+{
+	Type: HTTP;
+    Request: void;
+    Response: jsonRes;
+}
+
+server BitQuery
+{
+	protocol GetTxByAddrHttp;
+	protocol GetStatisticByAmountHttp;
+	protocol GetStatisticByFreqHttp;
+	protocol GetStatisticByCycleHttp;
+	protocol GetStatisticByDefault;
+}

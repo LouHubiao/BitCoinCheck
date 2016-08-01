@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6DABDDA7-8DA4-4F8D-9613-53681E6AC8E0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Generator2</RootNamespace>
+    <AssemblyName>Generator2</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Trinity.Core">
+      <HintPath>GraphEngine.Lib\Trinity.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BitQueryBase.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TxJson.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TSLBit\TSLBit.tproj">
+      <Project>{6790F0D3-AB83-4315-8621-E875C30A1DF3}</Project>
+      <Name>TSLBit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <ZipperPath>"$(TrinityPath)\Zipper.exe"</ZipperPath>
+    <GraphEnginePackageName>$(AssemblyName).DeploymentPackage</GraphEnginePackageName>
+  </PropertyGroup>
+  <Target Name="DeployBuild">
+    <RemoveDir Directories="$(OutputPath)$(GraphEnginePackageName)" ContinueOnError="true" />
+    <MakeDir Directories="$(OutputPath)$(GraphEnginePackageName)" ContinueOnError="true" />
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Properties="TrinityPath=$(TrinityPath);OutputPath=$(OutputPath)$(GraphEnginePackageName)" Targets="Build" />
+  </Target>
+  <Target Name="MakeDeploymentPackage">
+    <Exec Command="$(ZipperPath) zip &quot;$(OutputPath)$(GraphEnginePackageName)&quot; &quot;$(OutputPath)$(GraphEnginePackageName).zip&quot;" ContinueOnError="false" />
+  </Target>
+  <UsingTask TaskName="Trinity.TSL.GenerateGraphEngineAssemblyInfo" AssemblyFile="$(TrinityPath)\Trinity.TSL.CompilerTask.dll" />
+  <Target Name="BeforeBuild" DependsOnTargets="ResolveProjectReferences;ResolveAssemblyReferences">
+    <GenerateGraphEngineAssemblyInfo ReferencedAssemblies="@(_ResolveAssemblyReferenceResolvedFiles)" Output="Properties\GraphEngine.AssemblyInfo.cs" />
+    <ItemGroup>
+      <Compile Include="Properties\GraphEngine.AssemblyInfo.cs" />
+    </ItemGroup>
+    <Copy SourceFiles="$(TrinityPath)\Trinity.Core.dll" DestinationFolder="$(MSBuildProjectDirectory)\GraphEngine.Lib" ContinueOnError="true" />
+    <Copy SourceFiles="$(TrinityPath)\Trinity.Core.xml" DestinationFolder="$(MSBuildProjectDirectory)\GraphEngine.Lib" ContinueOnError="true" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
