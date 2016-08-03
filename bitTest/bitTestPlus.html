@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>bitTest</title>
+	<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<h3>Search suspicious transaction by one address.</h3>
+	<p>suggest addresses: 1B6RSnKdNNknzNePjfmf7rMGh5mi6ntv3x, 1Cuju1Sw97U1SYSYuBiMdJz3NPrjNEzJtP, 1F6F2JTK2abJLKBU1Fb2LQ1NJjucPQhRdx, 1XPTgDRhN8RFnzniWCddobD9iKZatrvH4</p>
+	<div class="input-group" style="margin-top:20px;">
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50" rowspan="6" valign="top"></th>
+					<td width="200"><span style="color:red;">* </span>Address:</td>
+					<td>
+						<input id="addrInput" size="35" maxlength="100" type="text" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td>Transaction Amount(BTC):</td>
+					<td>
+						<input id="amountInput" size="35" maxlength="100" type="text" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td>Interval Length:</td>
+					<td>
+						<input id="freqInput" size="35" maxlength="100" type="text" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td>Interval Amount(BTC):</td>
+					<td>
+						<input id="freq_amountInput" size="35" maxlength="100" type="text" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td>Cycle Length:</td>
+					<td>
+						<input id="cycleInput" size="35" maxlength="100" type="text" class="form-control">
+					</td>
+				</tr>
+				<tr>
+					<td>Cycle Amount(BTC):</td>
+					<td>
+						<input id="cycle_amountInput" size="35" maxlength="100" type="text" class="form-control">
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<button class="btn btn-primary" type="button" onclick="GetInfo()" style="margin-left:50px;width:300px;">Search</button>
+	<br>
+	<br>
+	<div style="margin-left:auto;margin-right:auto">
+		<table id="txTable" class="table table-bordered table-hover">
+			<tr>
+				<th>Transaction</th>
+				<th>Amount(Default 50BTC)</th>
+				<th>HighFrequency</th>
+				<th>HasCycle</th>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript">
+		function GetInfo(){
+			var addr = $('#addrInput').val();
+			var amount = $('#amountInput').val();
+			var freq = $('#freqInput').val();
+			var freq_amount = $('#freq_amountInput').val();
+			var cycle = $('#cycleInput').val();
+			var cycle_amount = $('#cycle_amountInput').val();
+			if(addr.length==0)
+				return;
+			if(amount.length==0)
+				amount = -1;
+			if(freq.length==0)
+				freq = -1;
+			if(freq_amount.length==0)
+				freq_amount = -1;
+			if(cycle.length==0)
+				cycle = -1;
+			if(cycle_amount.length==0)
+				cycle_amount = -1;
+			amount = amount*100000000;
+			freq_amount = freq_amount*100000000;
+			cycle_amount = cycle_amount*100000000;
+			//172.23.232.10  10.190.172.115 for remote
+			$.post("http://10.190.172.115/GetTxByAddrHttp/",'{"addr":'+addr+',"amount":'+amount+',"freq":'+freq+',"freq_amount":'+freq_amount+',"cycle":'+cycle+',"cycle_amount":'+cycle_amount+'}',function(res){
+				//console.log(res);
+				var results = JSON.parse(res.value);
+				$('#txTable tr:not(:first)').empty();
+				for(index in results){
+					$('#txTable').append('<tr><td><a href="https://blockchain.info/tx/'+results[index].hashVal+'">'+results[index].hashVal+'</a></td><td>'+results[index].isAmount+'</td><td>'+results[index].isFreq+'</td><td>'+results[index].isCycle+'</td></tr>')
+				}
+  			},
+	  		"json");
+		}
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+static void Main(string[] args)
+{
+
+    BitQuery server = new BitQuery();
+    server.Start();
+
+    LoadBlocks(2000000000, 1, 2);
+    
+    Global.LocalStorage.SaveStorage();
+    
+    Console.WriteLine("Main done...");
+}
+
+//load block and update isAmount and isFreq
+public static void LoadBlocks(long amountMax, long timespan, int step)
+{
+    Console.WriteLine("LoadBlocks begin...");
+
+    //read json line by line
+    using (StreamReader reader = new StreamReader(@"D:\Bit\block.txt"))
+    {
+        Queue<freqPara> txsQueue = new Queue<freqPara>();
+        List<Int64> cellIDsFreq = new List<long>();
+
+        //for circle
+        List<Int64> cellIDCircle = new List<Int64>();
+
+        string line;
+        while (null != (line = reader.ReadLine()))
+        {
+            //convert string to object
+            JSONBack jsonBack = ConvertToJSONBack(line);
+            if (jsonBack.amount > 0)
+            {
+                //convert List<Input> to List<In> and List<CellID> for compatible
+                List<In> ins = new List<In>();
+                List<string> inAddrs = new List<string>();
+                foreach (Input _in in jsonBack.ins)
+                {
+                    In __in = new In(_in.tx_index, _in.addr);
+                    ins.Add(__in);
+                    inAddrs.Add(_in.addr);
+                }
+
+                while (txsQueue.Count > 1000 || (txsQueue.Count > 0 && jsonBack.time - txsQueue.Peek().time > 60))
+                    txsQueue.Dequeue();
+
+                List<string> addrsIn = new List<string>();
+                foreach (Input _in in jsonBack.ins)
+                    addrsIn.Add(_in.addr);
+                List<string> addrsOut = new List<string>();
+                foreach (string _out in jsonBack.outs)
+                    addrsOut.Add(_out);
+
+                foreach (freqPara pre in txsQueue)
+                {
+                    foreach (string addr in pre.addrsIn)
+                    {
+                        if (jsonBack.time - pre.time <= timespan && (addrsIn.Contains(addr) || addrsOut.Contains(addr)) && !cellIDsFreq.Contains(pre.CellID))
+                        {
+                            cellIDsFreq.Add(pre.CellID);
+                        }
+                    }
+                    foreach (string addr in pre.addrsOut)
+                    {
+                        if (jsonBack.time - pre.time <= timespan && (addrsIn.Contains(addr) || addrsOut.Contains(addr)) && !cellIDsFreq.Contains(pre.CellID))
+                        {
+                            cellIDsFreq.Add(pre.CellID);
+                        }
+                    }
+                }
+                foreach (freqPara pre in txsQueue)
+                {
+                    foreach (In _in in ins)
+                    {
+                        if (_in.tx_index == pre.CellID)
+                        {
+                            foreach (string addr in pre.addrsIn)
+                            {
+                                if (addrsOut.Contains(addr))
+                                {
+                                    if (!cellIDCircle.Contains(pre.CellID))
+                                        cellIDCircle.Add(pre.CellID);
+                                    if (!cellIDCircle.Contains(jsonBack.CellID))
+                                        cellIDCircle.Add(jsonBack.CellID);
+                                    //Console.WriteLine(jsonBack.CellID + ":" + txsQueue.Count);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                freqPara para;
+                para.CellID = jsonBack.CellID;
+                para.addrsIn = addrsIn;
+                para.addrsOut = addrsOut;
+                para.time = jsonBack.time;
+                txsQueue.Enqueue(para);
+
+                try
+                {
+                    Tx tx = new Tx(jsonBack.CellID, jsonBack.time, jsonBack.hash, ins, inAddrs, jsonBack.outs, jsonBack.amount, (int)(jsonBack.amount / amountMax), cellIDsFreq.Count);
+                    Global.LocalStorage.SaveTx(tx);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    throw;
+                }
+
+                if (cellIDsFreq.Count > 0)
+                {
+                    foreach (Int64 cellID in cellIDsFreq)
+                    {
+                        using (var tx = Global.LocalStorage.UseTx(cellID))
+                        {
+                            if (tx.isFreq < cellIDsFreq.Count)
+                                tx.isFreq = cellIDsFreq.Count;
+                        }
+                    }
+                    cellIDsFreq.Clear();
+                }
+            }
+        }
+        foreach (Int64 cellID in cellIDCircle)
+        {
+            using (var tx = Global.LocalStorage.UseTx(cellID))
+            {
+                tx.isCycle = true;
+            }
+        }
+        Console.WriteLine(cellIDCircle.Count);
+    }
+}

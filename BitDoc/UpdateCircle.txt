@@ -1,0 +1,98 @@
+public static void updateCircle(int step)
+        {
+            Console.WriteLine("updateCircle begin...");
+
+            List<Int64> circleTxs = new List<Int64>();
+            List<string> targetOuts = new List<string>();
+            List<Input> firstIns = new List<Input>();
+            List<Int64> isReading = new List<Int64>();
+
+            foreach (var tx in Global.LocalStorage.Tx_Accessor_Selector())
+            {
+                Console.WriteLine("Tx_Accessor_Selector:" + tx.CellID);
+                foreach (string _out in tx.outs)
+                {
+                    targetOuts.Add(_out);
+                }
+                foreach (In _in in tx.ins)
+                {
+                    firstIns.Add(new Input(_in.addr, _in.tx_index));
+                }
+                Int64 cellIDCopy = tx.CellID != null ? (Int64)tx.CellID : -1;
+                DFSFind(step, 0, cellIDCopy, firstIns, targetOuts, circleTxs, isReading);
+                targetOuts.Clear();
+                firstIns.Clear();
+                isReading.Clear();
+            }
+            foreach (Int64 cellID in circleTxs)
+            {
+                using (var tx = Global.LocalStorage.UseTx(cellID))
+                {
+                    tx.isCycle = true;
+                }
+            }
+
+            Console.WriteLine("updateCircle end...");
+        }
+
+        public static bool DFSFind(int stepSum, int stepNow, Int64 inCellID, List<Input> ins, List<string> targetOuts, List<Int64> circleTxs, List<Int64> isReading)
+        {
+            if (stepNow >= stepSum)
+                return false;
+
+            if (!isReading.Contains(inCellID))
+            {
+                isReading.Add(inCellID);
+                if (stepNow != 0)
+                {
+                    foreach (Input input in ins)
+                    {
+                        foreach (string _out in targetOuts)
+                        {
+                            if (input.addr == _out)
+                            {
+                                if (!circleTxs.Contains(inCellID))
+                                    circleTxs.Add(inCellID);
+                            }
+                        }
+                    }
+                }
+
+                //recursive
+                bool[] HasCircles = new bool[ins.Count];
+                for (int i = 0; i < ins.Count; i++)
+                {
+                    int index = i;
+                    Input input = ins[index];
+                    if (!isReading.Contains(input.tx_index))
+                    {
+                        List<Input> nextIns = new List<Input>();
+                        Console.WriteLine("UseTx:" + input.tx_index);
+                        using (var tx = Global.LocalStorage.UseTx(input.tx_index, CellAccessOptions.ReturnNullOnCellNotFound))
+                        {
+                            if (tx == null)
+                                continue;
+                            foreach (In _in in tx.ins)
+                            {
+                                nextIns.Add(new Input(_in.addr, _in.tx_index));
+                            }
+                            isReading.Add(input.tx_index);
+                            HasCircles[index] = DFSFind(stepSum, stepNow + 1, input.tx_index, nextIns, targetOuts, circleTxs, isReading);
+                        }
+                    }
+                }
+                foreach (bool hasCircle in HasCircles)
+                {
+                    if (hasCircle == true)
+                    {
+                        lock (circleTxs)
+                        {
+                            if (!circleTxs.Contains(inCellID))
+                                circleTxs.Add(inCellID);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }

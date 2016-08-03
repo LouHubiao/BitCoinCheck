@@ -1,0 +1,30 @@
+static void Main(string[] args)
+{
+
+    BitQuery server = new BitQuery();
+    server.Start();
+
+    Global.LocalStorage.LoadStorage();
+    
+    //stringReqWriter reqMsg = new stringReqWriter("1B6RSnKdNNknzNePjfmf7rMGh5mi6ntv3x");
+    //stringReqWriter reqMsg = new stringReqWriter("12cbQLTFMXRnSzktFkuoG3eHoMeFtpTu3S");
+    //StringResReader resMsg = Global.CloudStorage.GetTxByAddrToBitQuery(0, reqMsg);
+    //Console.WriteLine(resMsg.value);
+
+    //read test
+    Int64[] cellIDs = { 10081540, 10073863, 10084103, 10073864, 10081556, 10073898, 10081601, 10081355, 10081362, 10081368, 10081370, 10081380, 10081390, 10075256, 10075260, 10073030, 10073036, 10073037, 10084094 };
+    foreach(Int64 cellID in cellIDs)
+    {
+        using (var tx = Global.LocalStorage.UseTx(cellID))
+        {
+            int isAmount = tx.isAmount;
+            int isFreq = tx.isFreq;
+            bool isCycle = tx.isCycle;
+            Console.WriteLine(isAmount);
+            Console.WriteLine(isFreq);
+            Console.WriteLine(isCycle);
+        }
+    }
+    
+    Console.WriteLine("Main done...");
+}
